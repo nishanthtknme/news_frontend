@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Explore</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css">
+
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: { neon: '#00ffe1' }
+    }
+  }
+}
+</script>
+
+<style>
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 50;
+  height: 100vh;
+  width: 100%;
+  max-width: 420px;
+
+  background-color: rgba(24,24,27,0.95);
+  backdrop-filter: blur(6px);
+  border-left: 1px solid rgba(255,255,255,0.1);
+
+  transform: translateX(100%);   /* CLOSED → offscreen right */
+  transition: transform 0.3s ease;
+}
+
+/* OPEN → slides right → left */
+.drawer.open {
+  transform: translateX(0);
+}
+
+
+/* CLOSE: left → right */
+.drawer.closing {
+  transform: translateX(100%);
+  opacity: 0;
+}
+
+/* ================= BACKDROP ================= */
+#backdrop {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.6);
+  z-index: 40;
+}
+
+#backdrop.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ================= IG-STYLE TILE HOVER ================= */
+.card img {
+  transition: transform 0.35s ease;
+}
+
+.card:hover img {
+  transform: scale(1.05);
+}
+
+
+
+
+</style>
+
+</head>
+
+<body class="overflow-x-hidden" style="background-color: #ffffff; color: #000000">
+
+
+
+<!-- ================= NAVBAR ================= -->
+<nav class="fixed top-0 inset-x-0 z-50 border-b transition-colors duration-300">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+
+    <h1 class="font-bold tracking-wide text-lg">EXPLORE</h1>
+
+    <!-- DESKTOP SEARCH -->
+    <div class="hidden md:flex flex-1 max-w-3xl mx-6">
+      <div class="flex w-full items-center gap-2 px-4 py-2 rounded-full
+                  border transition-colors duration-300">
+        <input id="desktopSearch"
+          placeholder="Search…"
+          class="flex-1 bg-transparent text-sm outline-none transition-colors duration-300"/>
+        <select class="filter transition-colors duration-300"><option>Categories</option></select>
+        <select class="filter transition-colors duration-300"><option>Media</option></select>
+        <input type="date" class="filter [color-scheme:dark] transition-colors duration-300" />
+      </div>
+    </div>
+
+<!-- THEME TOGGLE (DESKTOP ONLY) -->
+<div class="hidden md:flex items-center">
+  <div class="toggle-button-container">
+    <div class="btn btn-pill" id="button-9">
+      <input type="checkbox" class="checkbox" id="themeToggle">
+
+      <div class="knob">
+        <i class="ph ph-sun icon-sun"></i>
+        <i class="ph ph-moon icon-moon"></i>
+        <span></span>
+      </div>
+
+      <div class="btn-bg"></div>
+    </div>
+  </div>
+</div>
+
+    <!-- TOGGLE -->
+    <button id="navToggle"
+      class="text-2xl px-2 hover:text-neon transition select-none">☰</button>
+  </div>
+</nav>
+
+<!-- ================= DRAWER ================= -->
+<div id="navDrawer"
+  class=" fixed top-0 right-0 z-50
+         h-screen w-full sm:w-[420px]
+         bg-zinc-900/95 backdrop-blur border-l border-white/10
+         transition-transform duration-300 ease-out drawer">
+
+
+  <div class="flex items-center justify-between px-6 py-4 border-b border-white/10 transition-colors duration-300">
+    <h2 class="font-semibold text-lg">Filters</h2>
+    <button id="closeDrawer" class="text-2xl hover:text-neon">✕</button>
+  </div>
+
+  <div class="p-6 space-y-5 overflow-y-auto h-[calc(100vh-64px)]">
+
+    <input id="drawerSearch"
+      placeholder="Search news, blogs, releases…"
+      class="w-full text-sm px-4 py-3 rounded-full outline-none transition-colors duration-300"/>
+
+    <div class="space-y-3">
+      <select class="filter w-full transition-colors duration-300">
+        <option>Categories</option>
+        <option>News</option>
+        <option>Blogs</option>
+        <option>Releases</option>
+      </select>
+
+      <select class="filter w-full transition-colors duration-300">
+        <option>Media</option>
+        <option>Images</option>
+        <option>Videos</option>
+      </select>
+
+      <input type="date" class="filter w-full transition-colors duration-300" />
+
+      <select class="filter w-full transition-colors duration-300">
+        <option>Latest</option>
+        <option>Oldest</option>
+      </select>
+    </div>
+
+    <button class="w-full py-3 rounded-xl bg-neon text-black font-semibold">
+      Apply Filters
+    </button>
+      <!-- MOBILE THEME TOGGLE (INSIDE DRAWER) -->
+<div class="md:hidden flex items-center justify-between w-full">
+  <span class="text-sm font-medium select-none">
+    Theme
+  </span>
+
+  <div class="toggle-button-container">
+    <div class="btn btn-pill" id="button-9-mobile">
+      <input type="checkbox" class="checkbox" id="themeToggleMobile">
+
+      <div class="knob">
+        <i class="ph ph-sun icon-sun"></i>
+        <i class="ph ph-moon icon-moon"></i>
+        <span></span>
+      </div>
+
+      <div class="btn-bg"></div>
+    </div>
+  </div>
+</div>
+
+
+<!--        <div class="btn-bg"></div>-->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  </div>
+</div>
+
+<!-- BACKDROP -->
+<div id="backdrop" class="hidden fixed inset-0 bg-black/60 z-40"></div>
+
+
+<!-- ================= NEWS PAGE ================= -->
+<div class="flex flex-col md:flex-row max-w-7xl mx-auto mt-28 gap-6 px-4">
+
+  <!-- LEFT IMAGE / VIDEO (FIXED) -->
+  <div class="relative md:w-1/2 h-[75vh] rounded-xl overflow-hidden sticky top-28">
+    <img src="https://picsum.photos/800/1000"
+         class="w-full h-full object-cover" />
+
+    <!-- ACTION BUTTONS -->
+    <div class="absolute right-4 bottom-4 flex flex-col gap-4 z-10">
+      <button class="w-12 h-12 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-neon hover:text-black transition">
+        <i class="ph ph-heart"></i>
+      </button>
+
+      <!-- COMMENT TOGGLE -->
+      <button
+        id="commentToggle"
+        class="w-12 h-12 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-neon hover:text-black transition">
+        <i class="ph ph-chat-circle"></i>
+      </button>
+
+      <button class="w-12 h-12 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-neon hover:text-black transition">
+        <i class="ph ph-share-network"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- RIGHT CONTENT (SCROLLABLE) -->
+  <div class="md:w-1/2 max-h-[75vh] overflow-y-auto pr-2 scrollbar-hide">
+
+    <div class="text-gray-400 uppercase text-sm mb-2">News • Mumbai</div>
+
+    <h1 class="text-4xl font-extrabold mb-4">
+      Markets React to Global Oil Prices
+    </h1>
+
+    <div class="flex items-center gap-4 text-gray-400 text-sm mb-6">
+      <img src="https://i.pravatar.cc/40" class="w-10 h-10 rounded-full">
+      <span>By John Doe</span>
+      <span>•</span>
+      <span>2 hours ago</span>
+    </div>
+
+    <div class="space-y-4 text-gray-700 text-lg leading-relaxed">
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+      <p>Maecenas nec odio et ante tincidunt tempus.</p>
+      <p>Donec vitae sapien ut libero venenatis faucibus.</p>
+      <p>Vestibulum purus quam, scelerisque ut, mollis sed.</p>
+      <p>Curabitur blandit mollis lacus.</p>
+    </div>
+
+    <!-- COMMENTS (HIDDEN INITIALLY) -->
+    <div
+      id="commentsSection"
+      class="mt-10 overflow-hidden
+             max-h-0 opacity-0
+             transition-all duration-500 ease-in-out">
+
+      <h2 class="text-2xl font-bold mb-4">Comments</h2>
+
+      <!-- ADD COMMENT -->
+      <div class="flex gap-4 mb-6">
+        <img src="https://i.pravatar.cc/41" class="w-10 h-10 rounded-full">
+        <textarea
+          placeholder="Write a comment..."
+          class="flex-1 p-3 rounded-xl border border-gray-300 resize-none"></textarea>
+      </div>
+
+      <!-- COMMENT ITEM -->
+      <div class="flex gap-4">
+        <img src="https://i.pravatar.cc/42" class="w-10 h-10 rounded-full">
+        <div>
+          <div class="flex items-center gap-2 text-sm">
+            <span class="font-semibold">Jane Doe</span>
+            <span class="text-gray-400">2h ago</span>
+          </div>
+          <p class="text-gray-700 mt-1">
+            This article is very insightful. Thanks for sharing!
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- ================= COMMENT TOGGLE SCRIPT ================= -->
+<script>
+const commentToggle = document.getElementById("commentToggle");
+const comments = document.getElementById("commentsSection");
+
+let isOpen = false;
+
+commentToggle.addEventListener("click", () => {
+  isOpen = !isOpen;
+
+  if (isOpen) {
+    comments.classList.remove("max-h-0", "opacity-0");
+    comments.classList.add("max-h-[1000px]", "opacity-100");
+  } else {
+    comments.classList.add("max-h-0", "opacity-0");
+    comments.classList.remove("max-h-[1000px]", "opacity-100");
+  }
+});
+</script>
+
+<!-- SCROLLBAR HIDE -->
+<style>
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { scrollbar-width: none; }
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ================= FILTER STYLE ================= -->
+<style>
+.filter {
+  background: rgba(39,39,42,.7);
+  color: #fff;
+  font-size: 13px;
+  padding: 10px 14px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255,255,255,.1);
+}
+.filter option { background: #18181b; }
+.filter:focus { border-color: #00ffe1; }
+
+
+ /* ======================================================
+   BUTTON 9 – THEME TOGGLE (DESKTOP + MOBILE FIXED)
+   ====================================================== */
+
+/* container (prevents flex stretch on mobile) */
+.toggle-button-container {
+  width: 74px;
+  height: 36px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* button shell */
+.btn {
+  position: relative;
+  width: 74px;
+  height: 36px;
+  overflow: hidden;
+}
+
+/* pill shape */
+.btn-pill,
+.btn-pill .btn-bg {
+  border-radius: 999px;
+}
+
+/* checkbox overlay */
+.checkbox {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 5;
+}
+
+/* background */
+.btn-bg {
+  position: absolute;
+  inset: 0;
+  background-color: blue;
+  transition: background-color 0.3s ease;
+  z-index: 1;
+}
+
+/* knob wrapper */
+.knob {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+/* ======================================================
+   SHARED ELEMENTS (DESKTOP + MOBILE)
+   ====================================================== */
+
+#button-9 .knob span,
+#button-9-mobile .knob span,
+#button-9 .icon-sun,
+#button-9-mobile .icon-sun,
+#button-9 .icon-moon,
+#button-9-mobile .icon-moon {
+  position: absolute;
+  top: 4px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  transition: all 0.4s cubic-bezier(0.18, 0.89, 0.35, 1.15);
+}
+
+/* sun icon */
+#button-9 .icon-sun,
+#button-9-mobile .icon-sun {
+  left: 6px;
+  color: #fff;
+  opacity: 1;
+  z-index: 3;
+}
+
+/* moon icon */
+#button-9 .icon-moon,
+#button-9-mobile .icon-moon {
+  right: 6px;
+  color: #fff;
+  opacity: 0;
+  z-index: 3;
+}
+
+/* sliding knob */
+#button-9 .knob span,
+#button-9-mobile .knob span {
+  left: 4px;
+  background-color: #03a9f4;
+  z-index: 2;
+}
+
+/* ======================================================
+   CHECKED STATE
+   ====================================================== */
+
+#button-9 .checkbox:checked + .knob .icon-sun,
+#button-9-mobile .checkbox:checked + .knob .icon-sun {
+  opacity: 0;
+}
+
+#button-9 .checkbox:checked + .knob .icon-moon,
+#button-9-mobile .checkbox:checked + .knob .icon-moon {
+  opacity: 1;
+}
+
+#button-9 .checkbox:checked + .knob span,
+#button-9-mobile .checkbox:checked + .knob span {
+  left: 42px;
+  background-color: #f44336;
+}
+
+#button-9 .checkbox:checked ~ .btn-bg,
+#button-9-mobile .checkbox:checked ~ .btn-bg {
+  background-color: #fcebeb;
+}
+
+/* ================= HARD MOBILE FIX ================= */
+@media (max-width: 768px) {
+
+  .toggle-button-container {
+    width: 74px !important;
+    height: 36px !important;
+
+    min-width: 74px !important;
+    max-width: 74px !important;
+
+    min-height: 36px !important;
+    max-height: 36px !important;
+
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+
+    flex: none !important;
+    align-self: center !important;
+  }
+
+  .btn {
+    width: 74px !important;
+    height: 36px !important;
+
+    min-height: 36px !important;
+    max-height: 36px !important;
+
+    flex: none !important;
+  }
+
+  .knob,
+  .btn-bg {
+    height: 36px !important;
+  }
+}
+
+
+
+</style>
+
+<!-- ================= SCRIPTS ================= -->
+<script>
+const toggle = document.getElementById('navToggle');
+const drawer = document.getElementById('navDrawer');
+const closeBtn = document.getElementById('closeDrawer');
+const backdrop = document.getElementById('backdrop');
+
+function openDrawer() {
+  drawer.classList.add('open');
+  backdrop.classList.add('visible');
+}
+
+function closeDrawer() {
+  drawer.classList.remove('open');   // auto animates left → right
+  backdrop.classList.remove('visible');
+}
+
+toggle.addEventListener('click', openDrawer);
+closeBtn.addEventListener('click', closeDrawer);
+backdrop.addEventListener('click', closeDrawer);
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeDrawer();
+});
+</script>
+
+
+<script>
+const desktopSearch = document.getElementById('desktopSearch');
+const drawerSearch = document.getElementById('drawerSearch');
+const cards = document.querySelectorAll('.card');
+
+function filterCards(query) {
+  const q = query.toLowerCase().trim();
+  cards.forEach(card => {
+    const text = (
+      card.dataset.title +
+      card.dataset.category +
+      card.dataset.media +
+      card.dataset.place
+    ).toLowerCase();
+    card.style.display = text.includes(q) ? '' : 'none';
+  });
+}
+
+desktopSearch?.addEventListener('input', e => filterCards(e.target.value));
+drawerSearch?.addEventListener('input', e => filterCards(e.target.value));
+</script>
+
+
+<script>
+const desktopToggle = document.getElementById("themeToggle");
+const mobileToggle  = document.getElementById("themeToggleMobile");
+
+// ================= THEME STYLES =================
+const darkStyles = {
+  bodyBg: "#000",
+  bodyColor: "#fff",
+  navBg: "rgba(0,0,0,0.85)",
+  border: "rgba(255,255,255,0.1)",
+  inputBg: "#000",
+  inputColor: "#fff",
+  drawerBg: "rgba(24,24,27,0.95)"
+};
+
+const lightStyles = {
+  bodyBg: "#fff",
+  bodyColor: "#000",
+  navBg: "#fff",
+  border: "rgba(0,0,0,0.15)",
+  inputBg: "#fff",
+  inputColor: "#000",
+  drawerBg: "#f5f5f5"
+};
+
+// ================= APPLY THEME =================
+function applyTheme(theme) {
+  const s = theme === "dark" ? darkStyles : lightStyles;
+
+  document.body.style.backgroundColor = s.bodyBg;
+  document.body.style.color = s.bodyColor;
+
+  document.querySelector("nav").style.background = s.navBg;
+  document.querySelector("nav").style.borderColor = s.border;
+
+  document.querySelectorAll(".filter, select, input").forEach(el => {
+    el.style.backgroundColor = s.inputBg;
+    el.style.color = s.inputColor;
+    el.style.borderColor = s.border;
+  });
+
+  document.getElementById("navDrawer").style.background = s.drawerBg;
+
+  localStorage.setItem("theme", theme);
+}
+
+// ================= INIT =================
+const savedTheme = localStorage.getItem("theme") || "light";
+applyTheme(savedTheme);
+
+desktopToggle.checked = savedTheme === "dark";
+if (mobileToggle) mobileToggle.checked = desktopToggle.checked;
+
+// ================= SYNC TOGGLES =================
+desktopToggle.addEventListener("change", () => {
+  const theme = desktopToggle.checked ? "dark" : "light";
+  applyTheme(theme);
+  if (mobileToggle) mobileToggle.checked = desktopToggle.checked;
+});
+
+mobileToggle?.addEventListener("change", () => {
+  desktopToggle.checked = mobileToggle.checked;
+  desktopToggle.dispatchEvent(new Event("change"));
+});
+</script>
+
+
+<style>
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+</style>
+
+
+
+</body>
+</html>
