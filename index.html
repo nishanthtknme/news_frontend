@@ -97,9 +97,26 @@ tailwind.config = {
         <input id="desktopSearch"
           placeholder="Search…"
           class="flex-1 bg-transparent text-sm outline-none transition-colors duration-300"/>
-        <select class="filter transition-colors duration-300"><option>Categories</option></select>
-        <select class="filter transition-colors duration-300"><option>Media</option></select>
-        <input type="date" class="filter [color-scheme:dark] transition-colors duration-300" />
+        <select id="desktopCategory" class="filter transition-colors duration-300">
+  <option value="">Categories</option>
+  <option value="News">News</option>
+  <option value="Politics">Politics</option>
+  <option value="Sports">Sports</option>
+  <option value="Tech">Tech</option>
+  <option value="Entertainment">Entertainment</option>
+  <option value="Travel">Travel</option>
+</select>
+
+<select id="desktopMedia" class="filter transition-colors duration-300">
+  <option value="">Media</option>
+  <option value="Image">Image</option>
+  <option value="Video">Video</option>
+</select>
+
+<input id="desktopDate" type="date"
+  class="filter [color-scheme:dark] transition-colors duration-300" />
+
+
       </div>
     </div>
 
@@ -146,20 +163,27 @@ tailwind.config = {
       class="w-full text-sm px-4 py-3 rounded-full outline-none transition-colors duration-300"/>
 
     <div class="space-y-3">
-      <select class="filter w-full transition-colors duration-300">
-        <option>Categories</option>
-        <option>News</option>
-        <option>Blogs</option>
-        <option>Releases</option>
-      </select>
+      <select id="drawerCategory" class="filter w-full transition-colors duration-300">
+  <option value="">Categories</option>
+  <option value="News">News</option>
+  <option value="Politics">Politics</option>
+  <option value="Sports">Sports</option>
+  <option value="Tech">Tech</option>
+  <option value="Entertainment">Entertainment</option>
+  <option value="Travel">Travel</option>
+</select>
 
-      <select class="filter w-full transition-colors duration-300">
-        <option>Media</option>
-        <option>Images</option>
-        <option>Videos</option>
-      </select>
+<select id="drawerMedia" class="filter w-full transition-colors duration-300">
+  <option value="">Media</option>
+  <option value="Image">Image</option>
+  <option value="Video">Video</option>
+</select>
 
-      <input type="date" class="filter w-full transition-colors duration-300" />
+<input id="drawerDate" type="date"
+  class="filter w-full transition-colors duration-300" />
+
+
+
 
       <select class="filter w-full transition-colors duration-300">
         <option>Latest</option>
@@ -167,7 +191,7 @@ tailwind.config = {
       </select>
     </div>
 
-    <button class="w-full py-3 rounded-xl bg-neon text-black font-semibold">
+    <button id="applyFiltersBtn" class="w-full py-3 rounded-xl bg-neon text-black font-semibold">
       Apply Filters
     </button>
       <!-- MOBILE THEME TOGGLE (INSIDE DRAWER) -->
@@ -195,7 +219,9 @@ tailwind.config = {
 <!--        <div class="btn-bg"></div>-->
       </div>
     </div>
-  </div>
+
+
+</div>
 </div>
 
 
@@ -389,6 +415,7 @@ storyCloseBtn.addEventListener("click", e => {
 
 <!-- ================= IG EXPLORE GRID ================= -->
 <!-- ================= IG EXPLORE GRID (INSTAGRAM STYLE) ================= -->
+<!-- ================= IG EXPLORE GRID (INSTAGRAM STYLE) ================= -->
 <div
   id="grid"
   class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5
@@ -397,9 +424,18 @@ storyCloseBtn.addEventListener("click", e => {
          grid-flow-dense
          px-2 pb-24 max-w-7xl mx-auto">
 
-  <!-- FEATURE (2x2 IMAGE) -->
+  <!-- FEATURE IMAGE (2x2) -->
   <a href="newsview.html"
-     class="relative col-span-2 row-span-2 overflow-hidden group">
+     class="card relative col-span-2 row-span-2 overflow-hidden group"
+     data-category="News"
+     data-media="Image"
+     data-place="India"  data-date="2026-01-10">
+
+    <!-- 🔍 SEARCHABLE TEXT (HIDDEN) -->
+    <span class="sr-only">
+      Technology Feature India Tech Image Latest Innovation Launch
+    </span>
+
     <img
       src="https://picsum.photos/900?31"
       class="absolute inset-0 w-full h-full object-cover
@@ -408,62 +444,118 @@ storyCloseBtn.addEventListener("click", e => {
   </a>
 
   <!-- IMAGE -->
-  <a href="newsview.html" class="relative aspect-square overflow-hidden group">
-    <img src="https://i.pinimg.com/474x/8e/ce/c3/8ecec3d552653011983cc17d299289b1.jpg"
-         class="absolute inset-0 w-full h-full object-cover
-                transition-transform duration-300 group-hover:scale-105">
+  <a href="newsview.html"
+     class="card relative aspect-square overflow-hidden group"
+     data-category="Politics"
+     data-media="Image"
+     data-place="Delhi" data-date="2026-01-10">
+
+    <span class="sr-only">
+      Political Update Election Delhi Government Breaking News
+    </span>
+
+    <img
+      src="https://i.pinimg.com/474x/8e/ce/c3/8ecec3d552653011983cc17d299289b1.jpg"
+      class="absolute inset-0 w-full h-full object-cover
+             transition-transform duration-300 group-hover:scale-105">
   </a>
 
   <!-- VIDEO -->
-  <a href="newsview.html" class="relative aspect-square overflow-hidden">
+  <a href="newsview.html"
+     class="card relative aspect-square overflow-hidden"
+     data-category="News"
+     data-media="Video"
+     data-place="India"  data-date="2026-01-08">
+
+    <span class="sr-only">
+      Breaking News Video India Headlines Live Report
+    </span>
+
     <video
-      src="https://www.w3schools.com/html/mov_bbb.mp4"
+      src="assets/video/v1.mp4"
       class="absolute inset-0 w-full h-full object-cover"
       autoplay muted loop playsinline>
     </video>
-
-    <!-- video icon -->
-    <div class="absolute top-2 right-2 text-white text-lg">
-      ▶
-    </div>
+    <div class="absolute top-2 right-2 text-white text-lg">▶</div>
   </a>
 
   <!-- IMAGE -->
-  <a href="newsview.html" class="relative aspect-square overflow-hidden group">
-    <img src="https://picsum.photos/600?22"
-         class="absolute inset-0 w-full h-full object-cover
-                transition-transform duration-300 group-hover:scale-105">
+  <a href="newsview.html"
+     class="card relative aspect-square overflow-hidden group"
+     data-category="Sports"
+     data-media="Image"
+     data-place="Mumbai"  data-date="2026-01-09">
+
+    <span class="sr-only">
+      Sports Highlights Mumbai Match Score Cricket Football
+    </span>
+
+    <img
+      src="https://picsum.photos/600?22"
+      class="absolute inset-0 w-full h-full object-cover
+             transition-transform duration-300 group-hover:scale-105">
   </a>
 
   <!-- FEATURE VIDEO (2x2) -->
   <a href="newsview.html"
-     class="relative col-span-2 row-span-2 overflow-hidden">
+     class="card relative col-span-2 row-span-2 overflow-hidden"
+     data-category="Tech"
+     data-media="Video"
+     data-place="Bangalore"  data-date="2026-01-06">
+
+    <span class="sr-only">
+      Tech Product Launch Bangalore Startup AI Innovation
+    </span>
+
     <video
-      src="https://www.w3schools.com/html/movie.mp4"
+      src="assets/video/v2.mp4"
       class="absolute inset-0 w-full h-full object-cover"
       autoplay muted loop playsinline>
     </video>
-
-    <div class="absolute top-2 right-2 text-white text-lg">
-      ▶
-    </div>
+    <div class="absolute top-2 right-2 text-white text-lg">▶</div>
   </a>
 
   <!-- IMAGE -->
-  <a href="newsview.html" class="relative aspect-square overflow-hidden group">
-    <img src="https://picsum.photos/600?12"
-         class="absolute inset-0 w-full h-full object-cover
-                transition-transform duration-300 group-hover:scale-105">
+  <a href="newsview.html"
+     class="card relative aspect-square overflow-hidden group"
+     data-category="Entertainment"
+     data-media="Image"
+     data-place="Chennai"  data-date="2026-01-07">
+
+    <span class="sr-only">
+      Entertainment Buzz Chennai Movie Music Celebrity
+    </span>
+
+    <img
+      src="https://picsum.photos/600?12"
+      class="absolute inset-0 w-full h-full object-cover
+             transition-transform duration-300 group-hover:scale-105">
   </a>
 
   <!-- IMAGE -->
-  <a href="newsview.html" class="relative aspect-square overflow-hidden group">
-    <img src="https://picsum.photos/600?21"
-         class="absolute inset-0 w-full h-full object-cover
-                transition-transform duration-300 group-hover:scale-105">
+  <a href="newsview.html"
+     class="card relative aspect-square overflow-hidden group"
+     data-category="Travel"
+     data-media="Image"
+     data-place="Kerala"  data-date="2026-01-08">
+
+    <span class="sr-only">
+      Travel Photography Kerala Nature Tourism Landscape
+    </span>
+
+    <img
+      src="https://picsum.photos/600?21"
+      class="absolute inset-0 w-full h-full object-cover
+             transition-transform duration-300 group-hover:scale-105">
   </a>
 
 </div>
+
+<p id="noResults"
+   class="hidden text-center text-gray-400 py-16 text-sm">
+  No news found
+</p>
+
 
 <!-- ================= FILTER STYLE ================= -->
 <style>
@@ -670,27 +762,128 @@ document.addEventListener('keydown', e => {
 });
 </script>
 
-
 <script>
-const desktopSearch = document.getElementById('desktopSearch');
-const drawerSearch = document.getElementById('drawerSearch');
-const cards = document.querySelectorAll('.card');
+/* =====================================================
+   EXPLORE GRID – UNIFIED SEARCH + FILTERS (DATE FIX)
+===================================================== */
 
-function filterCards(query) {
-  const q = query.toLowerCase().trim();
-  cards.forEach(card => {
-    const text = (
-      card.dataset.title +
-      card.dataset.category +
-      card.dataset.media +
-      card.dataset.place
-    ).toLowerCase();
-    card.style.display = text.includes(q) ? '' : 'none';
-  });
+/* SEARCH */
+const desktopSearch = document.getElementById("desktopSearch");
+const drawerSearch  = document.getElementById("drawerSearch");
+
+/* DESKTOP FILTERS */
+const desktopCategory = document.getElementById("desktopCategory");
+const desktopMedia    = document.getElementById("desktopMedia");
+const desktopDate     = document.getElementById("desktopDate");
+
+/* DRAWER FILTERS */
+const drawerCategory = document.getElementById("drawerCategory");
+const drawerMedia    = document.getElementById("drawerMedia");
+const drawerDate     = document.getElementById("drawerDate");
+
+/* GRID */
+const grid = document.getElementById("grid");
+const gridCards = Array.from(grid.querySelectorAll(".card"));
+const noResults = document.getElementById("noResults");
+
+/* =====================================================
+   RESET FILTERS ON LOAD (INCLUDING DATE)
+===================================================== */
+function resetFilters() {
+  if (desktopSearch) desktopSearch.value = "";
+  if (drawerSearch)  drawerSearch.value = "";
+
+  if (desktopCategory) desktopCategory.value = "";
+  if (desktopMedia)    desktopMedia.value = "";
+
+  if (drawerCategory) drawerCategory.value = "";
+  if (drawerMedia)    drawerMedia.value = "";
+
+  // IMPORTANT: force date inputs to empty
+  if (desktopDate) desktopDate.value = "";
+  if (drawerDate)  drawerDate.value = "";
 }
 
-desktopSearch?.addEventListener('input', e => filterCards(e.target.value));
-drawerSearch?.addEventListener('input', e => filterCards(e.target.value));
+/* =====================================================
+   MAIN FILTER LOGIC
+===================================================== */
+function applyFilters() {
+  const searchText = (
+    desktopSearch?.value ||
+    drawerSearch?.value ||
+    ""
+  ).toLowerCase().trim();
+
+  const category =
+    desktopCategory?.value || drawerCategory?.value || "";
+
+  const media =
+    desktopMedia?.value || drawerMedia?.value || "";
+
+  const selectedDate =
+    desktopDate?.value || drawerDate?.value || "";
+
+  let visibleCount = 0;
+
+  gridCards.forEach(card => {
+    const searchableText = `
+      ${card.textContent}
+      ${card.dataset.category}
+      ${card.dataset.media}
+      ${card.dataset.place}
+    `.toLowerCase();
+
+    const matchesSearch =
+      !searchText || searchableText.includes(searchText);
+
+    const matchesCategory =
+      !category || card.dataset.category === category;
+
+    const matchesMedia =
+      !media || card.dataset.media === media;
+
+    const matchesDate =
+      !selectedDate || card.dataset.date === selectedDate;
+
+    const show =
+      matchesSearch &&
+      matchesCategory &&
+      matchesMedia &&
+      matchesDate;
+
+    card.style.display = show ? "" : "none";
+    if (show) visibleCount++;
+  });
+
+  noResults.classList.toggle("hidden", visibleCount !== 0);
+}
+
+/* =====================================================
+   EVENTS
+===================================================== */
+
+/* Search typing */
+[desktopSearch, drawerSearch].forEach(el =>
+  el?.addEventListener("input", applyFilters)
+);
+
+/* Filters */
+[
+  desktopCategory,
+  desktopMedia,
+  desktopDate,
+  drawerCategory,
+  drawerMedia,
+  drawerDate
+].forEach(el =>
+  el?.addEventListener("change", applyFilters)
+);
+
+/* =====================================================
+   INIT – RESET + APPLY
+===================================================== */
+resetFilters();   // Clears everything including date
+applyFilters();
 </script>
 
 
@@ -769,9 +962,27 @@ mobileToggle?.addEventListener("change", () => {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+    .sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
 </style>
 
+<script>
+const applyBtn = document.getElementById('applyFiltersBtn');
 
+applyBtn.addEventListener('click', () => {
+  applyFilters();   // run the filters
+  closeDrawer();    // close the drawer automatically
+});
+</script>
 
 </body>
 </html>
