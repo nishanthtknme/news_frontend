@@ -16,13 +16,14 @@ toggle?.addEventListener('click', () => {
   document.body.classList.add('overflow-hidden'); // prevent scrolling
 });
 
+
 // ---------------- CLOSE DRAWER ----------------
-function closeDrawer() {
+window.closeDrawer = function () {
   drawer.classList.add('translate-x-full');
   drawer.classList.remove('translate-x-0');
   backdrop.classList.add('hidden');
   document.body.classList.remove('overflow-hidden');
-}
+};
 
 // ---------------- CLOSE EVENTS ----------------
 closeBtn?.addEventListener('click', closeDrawer);
@@ -280,10 +281,25 @@ document.addEventListener("DOMContentLoaded", () => {
    MODAL OPEN / CLOSE
 ====================================================== */
 function openModal() {
+  // 🔒 FORCE CLOSE DRAWER (no dependency)
+  const drawer = document.getElementById("navDrawer");
+  const backdrop = document.getElementById("backdrop");
+
+  if (drawer) {
+    drawer.classList.add("translate-x-full");
+    drawer.classList.remove("translate-x-0");
+  }
+
+  if (backdrop) backdrop.classList.add("hidden");
+  document.body.classList.remove("overflow-hidden");
+
+  // 🔓 OPEN LOGIN MODAL
   if (!loginModal) return;
   loginModal.classList.remove("hidden");
   loginModal.classList.add("flex", "modal-fade");
 }
+
+
 
 function closeModal(id) {
   const modal = document.getElementById(id);
