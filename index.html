@@ -7,6 +7,7 @@
 
 <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css">
+   <link rel="stylesheet" href="assets/css/style.css">
 
 <script>
 tailwind.config = {
@@ -18,65 +19,7 @@ tailwind.config = {
 }
 </script>
 
-<style>
-.drawer {
-  position: fixed;
-  top: 0;
-  right: 0;
-  z-index: 50;
-  height: 100vh;
-  width: 100%;
-  max-width: 420px;
 
-  background-color: rgba(24,24,27,0.95);
-  backdrop-filter: blur(6px);
-  border-left: 1px solid rgba(255,255,255,0.1);
-
-  transform: translateX(100%);   /* CLOSED → offscreen right */
-  transition: transform 0.3s ease;
-}
-
-/* OPEN → slides right → left */
-.drawer.open {
-  transform: translateX(0);
-}
-
-
-/* CLOSE: left → right */
-.drawer.closing {
-  transform: translateX(100%);
-  opacity: 0;
-}
-
-/* ================= BACKDROP ================= */
-#backdrop {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0,0,0,0.6);
-  z-index: 40;
-}
-
-#backdrop.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* ================= IG-STYLE TILE HOVER ================= */
-.card img {
-  transition: transform 0.35s ease;
-}
-
-.card:hover img {
-  transform: scale(1.05);
-}
-
-
-
-
-</style>
 
 </head>
 
@@ -85,71 +28,61 @@ tailwind.config = {
 
 
 <!-- ================= NAVBAR ================= -->
-<nav class="fixed top-0 inset-x-0 z-50 border-b transition-colors duration-300">
+<nav class="fixed top-0 inset-x-0 z-50 border-b transition-colors duration-300 bg-transparent">
   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
 
     <h1 class="font-bold tracking-wide text-lg">EXPLORE</h1>
 
     <!-- DESKTOP SEARCH -->
     <div class="hidden md:flex flex-1 max-w-3xl mx-6">
-      <div class="flex w-full items-center gap-2 px-4 py-2 rounded-full
-                  border transition-colors duration-300">
-        <input id="desktopSearch"
-          placeholder="Search…"
-          class="flex-1 bg-transparent text-sm outline-none transition-colors duration-300"/>
+      <div class="flex w-full items-center gap-2 px-4 py-2 rounded-full border transition-colors duration-300">
+        <input id="desktopSearch" placeholder="Search…" class="flex-1 bg-transparent text-sm outline-none transition-colors duration-300"/>
         <select id="desktopCategory" class="filter transition-colors duration-300">
-  <option value="">Categories</option>
-  <option value="News">News</option>
-  <option value="Politics">Politics</option>
-  <option value="Sports">Sports</option>
-  <option value="Tech">Tech</option>
-  <option value="Entertainment">Entertainment</option>
-  <option value="Travel">Travel</option>
-</select>
+          <option value="">Categories</option>
+          <option value="News">News</option>
+          <option value="Politics">Politics</option>
+          <option value="Sports">Sports</option>
+          <option value="Tech">Tech</option>
+          <option value="Entertainment">Entertainment</option>
+          <option value="Travel">Travel</option>
+        </select>
 
-<select id="desktopMedia" class="filter transition-colors duration-300">
-  <option value="">Media</option>
-  <option value="Image">Image</option>
-  <option value="Video">Video</option>
-</select>
+        <select id="desktopMedia" class="filter transition-colors duration-300">
+          <option value="">Media</option>
+          <option value="Image">Image</option>
+          <option value="Video">Video</option>
+        </select>
 
-<input id="desktopDate" type="date"
-  class="filter [color-scheme:dark] transition-colors duration-300" />
-
-
+        <input id="desktopDate" type="date" class="filter [color-scheme:dark] transition-colors duration-300" />
       </div>
     </div>
 
-<!-- THEME TOGGLE (DESKTOP ONLY) -->
-<div class="hidden md:flex items-center">
-  <div class="toggle-button-container">
-    <div class="btn btn-pill" id="button-9">
-      <input type="checkbox" class="checkbox" id="themeToggle">
-
-      <div class="knob">
-        <i class="ph ph-sun icon-sun"></i>
-        <i class="ph ph-moon icon-moon"></i>
-        <span></span>
+    <!-- THEME TOGGLE (DESKTOP ONLY) -->
+    <div class="hidden md:flex items-center">
+      <div class="toggle-button-container">
+        <div class="btn btn-pill" id="button-9">
+          <input type="checkbox" class="checkbox" id="themeToggle">
+          <div class="knob">
+            <i class="ph ph-sun icon-sun"></i>
+            <i class="ph ph-moon icon-moon"></i>
+            <span></span>
+          </div>
+          <div class="btn-bg"></div>
+        </div>
       </div>
-
-      <div class="btn-bg"></div>
     </div>
-  </div>
-</div>
 
-    <!-- TOGGLE -->
-    <button id="navToggle"
-      class="text-2xl px-2 hover:text-neon transition select-none">☰</button>
+    <!-- HAMBURGER TOGGLE -->
+    <button id="navToggle" class="text-2xl px-2 hover:text-neon transition select-none">☰</button>
   </div>
 </nav>
 
 <!-- ================= DRAWER ================= -->
 <div id="navDrawer"
-  class=" fixed top-0 right-0 z-50
-         h-screen w-full sm:w-[420px]
-         bg-zinc-900/95 backdrop-blur border-l border-white/10
-         transition-transform duration-300 ease-out drawer">
-
+     class="fixed top-0 right-0 z-50 h-screen w-full sm:w-[420px]
+            bg-zinc-900/95 backdrop-blur border-l border-white/10
+            transition-transform duration-300 ease-out
+            translate-x-full">
 
   <div class="flex items-center justify-between px-6 py-4 border-b border-white/10 transition-colors duration-300">
     <h2 class="font-semibold text-lg">Filters</h2>
@@ -157,33 +90,26 @@ tailwind.config = {
   </div>
 
   <div class="p-6 space-y-5 overflow-y-auto h-[calc(100vh-64px)]">
-
-    <input id="drawerSearch"
-      placeholder="Search news, blogs, releases…"
-      class="w-full text-sm px-4 py-3 rounded-full outline-none transition-colors duration-300"/>
+    <input id="drawerSearch" placeholder="Search news, blogs, releases…" class="w-full text-sm px-4 py-3 rounded-full bg-transparent border border-gray-400 placeholder-gray-500 outline-none transition-colors duration-300 focus:border-gray-600 focus:ring-2 focus:ring-indigo-500">
 
     <div class="space-y-3">
       <select id="drawerCategory" class="filter w-full transition-colors duration-300">
-  <option value="">Categories</option>
-  <option value="News">News</option>
-  <option value="Politics">Politics</option>
-  <option value="Sports">Sports</option>
-  <option value="Tech">Tech</option>
-  <option value="Entertainment">Entertainment</option>
-  <option value="Travel">Travel</option>
-</select>
+        <option value="">Categories</option>
+        <option value="News">News</option>
+        <option value="Politics">Politics</option>
+        <option value="Sports">Sports</option>
+        <option value="Tech">Tech</option>
+        <option value="Entertainment">Entertainment</option>
+        <option value="Travel">Travel</option>
+      </select>
 
-<select id="drawerMedia" class="filter w-full transition-colors duration-300">
-  <option value="">Media</option>
-  <option value="Image">Image</option>
-  <option value="Video">Video</option>
-</select>
+      <select id="drawerMedia" class="filter w-full transition-colors duration-300">
+        <option value="">Media</option>
+        <option value="Image">Image</option>
+        <option value="Video">Video</option>
+      </select>
 
-<input id="drawerDate" type="date"
-  class="filter w-full transition-colors duration-300" />
-
-
-
+      <input id="drawerDate" type="date" class="filter w-full transition-colors duration-300">
 
       <select class="filter w-full transition-colors duration-300">
         <option>Latest</option>
@@ -191,45 +117,31 @@ tailwind.config = {
       </select>
     </div>
 
-    <button id="applyFiltersBtn" class="w-full py-3 rounded-xl bg-neon text-black font-semibold">
-      Apply Filters
-    </button>
-      <!-- MOBILE THEME TOGGLE (INSIDE DRAWER) -->
-<div class="md:hidden flex items-center justify-between w-full">
-  <span class="text-sm font-medium select-none">
-    Theme
-  </span>
+    <button id="applyFiltersBtn" class="w-full py-3 rounded-xl bg-neon text-black font-semibold">Apply Filters</button>
 
-  <div class="toggle-button-container">
-    <div class="btn btn-pill" id="button-9-mobile">
-      <input type="checkbox" class="checkbox" id="themeToggleMobile">
-
-      <div class="knob">
-        <i class="ph ph-sun icon-sun"></i>
-        <i class="ph ph-moon icon-moon"></i>
-        <span></span>
-      </div>
-
-      <div class="btn-bg"></div>
-    </div>
-  </div>
-</div>
-
-
-<!--        <div class="btn-bg"></div>-->
+    <!-- MOBILE THEME TOGGLE -->
+    <div class="md:hidden flex items-center justify-between w-full mt-4">
+      <span class="text-sm font-medium select-none">Theme</span>
+      <div class="toggle-button-container">
+        <div class="btn btn-pill" id="button-9-mobile">
+          <input type="checkbox" class="checkbox" id="themeToggleMobile">
+          <div class="knob">
+            <i class="ph ph-sun icon-sun"></i>
+            <i class="ph ph-moon icon-moon"></i>
+            <span></span>
+          </div>
+          <div class="btn-bg"></div>
+        </div>
       </div>
     </div>
 
-
-</div>
-</div>
-
-
+    <h3 onclick="openModal()" class="cursor-pointer select-none mt-6">Login</h3>
   </div>
 </div>
 
 <!-- BACKDROP -->
 <div id="backdrop" class="hidden fixed inset-0 bg-black/60 z-40"></div>
+
 
 <!--<div class="h-24"></div>-->
 <!-- ================= STORIES ================= -->
@@ -324,92 +236,6 @@ tailwind.config = {
   </div>
 </div>
 
-<script>
-let cards = [...document.querySelectorAll(".story-card")];
-const viewer = document.getElementById("storyViewer");
-const image = document.getElementById("storyImage");
-const progress = document.getElementById("progressBar");
-const storyCloseBtn = document.getElementById("closeStory");
-const nextBtn = document.getElementById("nextStory");
-const prevBtn = document.getElementById("prevStory");
-
-let currentIndex = 0;
-let timer = null;
-const duration = 5000;
-
-function startProgress() {
-  progress.style.transition = "none";
-  progress.style.width = "0%";
-  setTimeout(() => {
-    progress.style.transition = `width ${duration}ms linear`;
-    progress.style.width = "100%";
-  }, 50);
-}
-
-function markViewed(index) {
-  const card = cards[index];
-  card.classList.add("story-viewed");
-  card.parentNode.appendChild(card);
-  cards = [...document.querySelectorAll(".story-card")];
-}
-
-function showStory(index) {
-  if (index >= cards.length) {
-    closeStory();
-    return;
-  }
-
-  currentIndex = index;
-  image.src = cards[index].dataset.story;
-
-  clearTimeout(timer);
-  startProgress();
-
-  timer = setTimeout(() => {
-    markViewed(currentIndex);
-    showStory(currentIndex + 1);
-  }, duration);
-}
-
-function openStory(index) {
-  viewer.classList.remove("hidden");
-  showStory(index);
-}
-
-function closeStory() {
-  viewer.classList.add("hidden");
-  image.src = "";
-  progress.style.width = "0%";
-  clearTimeout(timer);
-}
-
-cards.forEach((card, index) => {
-  card.addEventListener("click", () => openStory(index));
-});
-
-nextBtn.addEventListener("click", e => {
-  e.stopPropagation();
-  markViewed(currentIndex);
-  showStory(currentIndex + 1);
-});
-
-prevBtn.addEventListener("click", e => {
-  e.stopPropagation();
-  if (currentIndex > 0) showStory(currentIndex - 1);
-});
-
-storyCloseBtn.addEventListener("click", e => {
-  e.stopPropagation();
-  closeStory();
-});
-</script>
-
-<style>
-  .story-viewed {
-    background: #2b2b2b !important; /* grey like Instagram */
-    opacity: 0.85;
-  }
-</style>
 
 
 
@@ -557,432 +383,205 @@ storyCloseBtn.addEventListener("click", e => {
 </p>
 
 
-<!-- ================= FILTER STYLE ================= -->
-<style>
-.filter {
-  background: rgba(39,39,42,.7);
-  color: #fff;
-  font-size: 13px;
-  padding: 10px 14px;
-  border-radius: 9999px;
-  border: 1px solid rgba(255,255,255,.1);
-}
-.filter option { background: #18181b; }
-.filter:focus { border-color: #00ffe1; }
-
-
- /* ======================================================
-   BUTTON 9 – THEME TOGGLE (DESKTOP + MOBILE FIXED)
-   ====================================================== */
-
-/* container (prevents flex stretch on mobile) */
-.toggle-button-container {
-  width: 74px;
-  height: 36px;
-  position: relative;
-  flex-shrink: 0;
-}
-
-/* button shell */
-.btn {
-  position: relative;
-  width: 74px;
-  height: 36px;
-  overflow: hidden;
-}
-
-/* pill shape */
-.btn-pill,
-.btn-pill .btn-bg {
-  border-radius: 999px;
-}
-
-/* checkbox overlay */
-.checkbox {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  cursor: pointer;
-  z-index: 5;
-}
-
-/* background */
-.btn-bg {
-  position: absolute;
-  inset: 0;
-  background-color: blue;
-  transition: background-color 0.3s ease;
-  z-index: 1;
-}
-
-/* knob wrapper */
-.knob {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-}
-
-/* ======================================================
-   SHARED ELEMENTS (DESKTOP + MOBILE)
-   ====================================================== */
-
-#button-9 .knob span,
-#button-9-mobile .knob span,
-#button-9 .icon-sun,
-#button-9-mobile .icon-sun,
-#button-9 .icon-moon,
-#button-9-mobile .icon-moon {
-  position: absolute;
-  top: 4px;
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  transition: all 0.4s cubic-bezier(0.18, 0.89, 0.35, 1.15);
-}
-
-/* sun icon */
-#button-9 .icon-sun,
-#button-9-mobile .icon-sun {
-  left: 6px;
-  color: #fff;
-  opacity: 1;
-  z-index: 3;
-}
-
-/* moon icon */
-#button-9 .icon-moon,
-#button-9-mobile .icon-moon {
-  right: 6px;
-  color: #fff;
-  opacity: 0;
-  z-index: 3;
-}
-
-/* sliding knob */
-#button-9 .knob span,
-#button-9-mobile .knob span {
-  left: 4px;
-  background-color: #03a9f4;
-  z-index: 2;
-}
-
-/* ======================================================
-   CHECKED STATE
-   ====================================================== */
-
-#button-9 .checkbox:checked + .knob .icon-sun,
-#button-9-mobile .checkbox:checked + .knob .icon-sun {
-  opacity: 0;
-}
-
-#button-9 .checkbox:checked + .knob .icon-moon,
-#button-9-mobile .checkbox:checked + .knob .icon-moon {
-  opacity: 1;
-}
-
-#button-9 .checkbox:checked + .knob span,
-#button-9-mobile .checkbox:checked + .knob span {
-  left: 42px;
-  background-color: #f44336;
-}
-
-#button-9 .checkbox:checked ~ .btn-bg,
-#button-9-mobile .checkbox:checked ~ .btn-bg {
-  background-color: #fcebeb;
-}
-
-/* ================= HARD MOBILE FIX ================= */
-@media (max-width: 768px) {
-
-  .toggle-button-container {
-    width: 74px !important;
-    height: 36px !important;
-
-    min-width: 74px !important;
-    max-width: 74px !important;
-
-    min-height: 36px !important;
-    max-height: 36px !important;
-
-    display: inline-flex !important;
-    align-items: center;
-    justify-content: center;
-
-    flex: none !important;
-    align-self: center !important;
-  }
-
-  .btn {
-    width: 74px !important;
-    height: 36px !important;
-
-    min-height: 36px !important;
-    max-height: 36px !important;
-
-    flex: none !important;
-  }
-
-  .knob,
-  .btn-bg {
-    height: 36px !important;
-  }
-}
-
-
-
-</style>
-
-<!-- ================= SCRIPTS ================= -->
-<script>
-const toggle = document.getElementById('navToggle');
-const drawer = document.getElementById('navDrawer');
-const closeBtn = document.getElementById('closeDrawer');
-const backdrop = document.getElementById('backdrop');
-
-function openDrawer() {
-  drawer.classList.add('open');
-  backdrop.classList.add('visible');
-}
-
-function closeDrawer() {
-  drawer.classList.remove('open');   // auto animates left → right
-  backdrop.classList.remove('visible');
-}
-
-toggle.addEventListener('click', openDrawer);
-closeBtn.addEventListener('click', closeDrawer);
-backdrop.addEventListener('click', closeDrawer);
-
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeDrawer();
-});
-</script>
-
-<script>
-/* =====================================================
-   EXPLORE GRID – UNIFIED SEARCH + FILTERS (DATE FIX)
-===================================================== */
-
-/* SEARCH */
-const desktopSearch = document.getElementById("desktopSearch");
-const drawerSearch  = document.getElementById("drawerSearch");
-
-/* DESKTOP FILTERS */
-const desktopCategory = document.getElementById("desktopCategory");
-const desktopMedia    = document.getElementById("desktopMedia");
-const desktopDate     = document.getElementById("desktopDate");
-
-/* DRAWER FILTERS */
-const drawerCategory = document.getElementById("drawerCategory");
-const drawerMedia    = document.getElementById("drawerMedia");
-const drawerDate     = document.getElementById("drawerDate");
-
-/* GRID */
-const grid = document.getElementById("grid");
-const gridCards = Array.from(grid.querySelectorAll(".card"));
-const noResults = document.getElementById("noResults");
-
-/* =====================================================
-   RESET FILTERS ON LOAD (INCLUDING DATE)
-===================================================== */
-function resetFilters() {
-  if (desktopSearch) desktopSearch.value = "";
-  if (drawerSearch)  drawerSearch.value = "";
-
-  if (desktopCategory) desktopCategory.value = "";
-  if (desktopMedia)    desktopMedia.value = "";
-
-  if (drawerCategory) drawerCategory.value = "";
-  if (drawerMedia)    drawerMedia.value = "";
-
-  // IMPORTANT: force date inputs to empty
-  if (desktopDate) desktopDate.value = "";
-  if (drawerDate)  drawerDate.value = "";
-}
-
-/* =====================================================
-   MAIN FILTER LOGIC
-===================================================== */
-function applyFilters() {
-  const searchText = (
-    desktopSearch?.value ||
-    drawerSearch?.value ||
-    ""
-  ).toLowerCase().trim();
-
-  const category =
-    desktopCategory?.value || drawerCategory?.value || "";
-
-  const media =
-    desktopMedia?.value || drawerMedia?.value || "";
-
-  const selectedDate =
-    desktopDate?.value || drawerDate?.value || "";
-
-  let visibleCount = 0;
-
-  gridCards.forEach(card => {
-    const searchableText = `
-      ${card.textContent}
-      ${card.dataset.category}
-      ${card.dataset.media}
-      ${card.dataset.place}
-    `.toLowerCase();
-
-    const matchesSearch =
-      !searchText || searchableText.includes(searchText);
-
-    const matchesCategory =
-      !category || card.dataset.category === category;
-
-    const matchesMedia =
-      !media || card.dataset.media === media;
-
-    const matchesDate =
-      !selectedDate || card.dataset.date === selectedDate;
-
-    const show =
-      matchesSearch &&
-      matchesCategory &&
-      matchesMedia &&
-      matchesDate;
-
-    card.style.display = show ? "" : "none";
-    if (show) visibleCount++;
-  });
-
-  noResults.classList.toggle("hidden", visibleCount !== 0);
-}
-
-/* =====================================================
-   EVENTS
-===================================================== */
-
-/* Search typing */
-[desktopSearch, drawerSearch].forEach(el =>
-  el?.addEventListener("input", applyFilters)
-);
-
-/* Filters */
-[
-  desktopCategory,
-  desktopMedia,
-  desktopDate,
-  drawerCategory,
-  drawerMedia,
-  drawerDate
-].forEach(el =>
-  el?.addEventListener("change", applyFilters)
-);
-
-/* =====================================================
-   INIT – RESET + APPLY
-===================================================== */
-resetFilters();   // Clears everything including date
-applyFilters();
-</script>
-
-
-<script>
-const desktopToggle = document.getElementById("themeToggle");
-const mobileToggle  = document.getElementById("themeToggleMobile");
-
-// ================= THEME STYLES =================
-const darkStyles = {
-  bodyBg: "#000",
-  bodyColor: "#fff",
-  navBg: "rgba(0,0,0,0.85)",
-  border: "rgba(255,255,255,0.1)",
-  inputBg: "#000",
-  inputColor: "#fff",
-  drawerBg: "rgba(24,24,27,0.95)"
-};
-
-const lightStyles = {
-  bodyBg: "#fff",
-  bodyColor: "#000",
-  navBg: "#fff",
-  border: "rgba(0,0,0,0.15)",
-  inputBg: "#fff",
-  inputColor: "#000",
-  drawerBg: "#f5f5f5"
-};
-
-// ================= APPLY THEME =================
-function applyTheme(theme) {
-  const s = theme === "dark" ? darkStyles : lightStyles;
-
-  document.body.style.backgroundColor = s.bodyBg;
-  document.body.style.color = s.bodyColor;
-
-  document.querySelector("nav").style.background = s.navBg;
-  document.querySelector("nav").style.borderColor = s.border;
-
-  document.querySelectorAll(".filter, select, input").forEach(el => {
-    el.style.backgroundColor = s.inputBg;
-    el.style.color = s.inputColor;
-    el.style.borderColor = s.border;
-  });
-
-  document.getElementById("navDrawer").style.background = s.drawerBg;
-
-  localStorage.setItem("theme", theme);
-}
-
-// ================= INIT =================
-const savedTheme = localStorage.getItem("theme") || "light";
-applyTheme(savedTheme);
-
-desktopToggle.checked = savedTheme === "dark";
-if (mobileToggle) mobileToggle.checked = desktopToggle.checked;
-
-// ================= SYNC TOGGLES =================
-desktopToggle.addEventListener("change", () => {
-  const theme = desktopToggle.checked ? "dark" : "light";
-  applyTheme(theme);
-  if (mobileToggle) mobileToggle.checked = desktopToggle.checked;
-});
-
-mobileToggle?.addEventListener("change", () => {
-  desktopToggle.checked = mobileToggle.checked;
-  desktopToggle.dispatchEvent(new Event("change"));
-});
-</script>
-
-
-<style>
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
-    .sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0,0,0,0);
-  white-space: nowrap;
-  border: 0;
-}
-</style>
-
-<script>
-const applyBtn = document.getElementById('applyFiltersBtn');
-
-applyBtn.addEventListener('click', () => {
-  applyFilters();   // run the filters
-  closeDrawer();    // close the drawer automatically
-});
-</script>
+
+<!-- Modal -->
+<div id="modal" class="fixed inset-0 hidden z-60 items-center justify-center bg-black/40">
+
+  <div id="modalContent" class="bg-white w-full max-w-md rounded-2xl shadow-xl p-8 relative mx-4">
+
+    <!-- Close -->
+    <button onclick="closeModal()" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 text-xl">&times;</button>
+
+    <h2 class="text-2xl font-bold text-center">Welcome Back</h2>
+    <p class="text-center text-gray-500 mb-6">Login to continue</p>
+
+    <button class="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-50 transition mb-5">
+      <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5">
+      Continue with Google
+    </button>
+
+    <div class="flex items-center gap-4 mb-5">
+      <hr class="flex-1">
+      <span class="text-gray-400 text-sm">or</span>
+      <hr class="flex-1">
+    </div>
+
+<input
+  id="username"
+  type="text"
+  placeholder="Username or email"
+  class="w-full px-4 py-2 mb-4
+         border border-gray-400
+         rounded-lg
+         bg-transparent
+
+         placeholder-gray-500
+         focus:outline-none
+         focus:border-gray-600
+         focus:ring-2 focus:ring-indigo-500">
+
+<input
+  id="password"
+  type="password"
+  placeholder="Password"
+  class="w-full px-4 py-2 mb-2
+         border border-gray-400
+         rounded-lg
+         bg-transparent
+
+         placeholder-gray-500
+         focus:outline-none
+         focus:border-gray-600
+         focus:ring-2 focus:ring-indigo-500">
+
+
+
+  <div class="text-right mb-4">
+  <a href="#" class="text-sm text-indigo-600 hover:underline" onclick="openForgot(); return false;">
+    Forgot password?
+  </a>
+</div>
+
+    <button id="loginBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-semibold transition" onclick="simulateLogin()">
+      Login
+    </button>
+
+    <p class="text-center text-gray-500 mt-6" onclick="openSignup()" >Don't have an account? <a href="#" class="text-indigo-600 hover:underline">Sign up</a></p>
+  </div>
+</div>
+
+<!-- SUCCESS / FAIL LAYERS -->
+<div id="successLayer" class="hidden absolute inset-0 bg-white flex flex-col items-center justify-center z-50">
+  <div class="relative flex flex-col items-center justify-center">
+    <div id="pulseBg" class="hidden pulse-bg"></div>
+    <div id="spinner" class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-6"></div>
+    <svg id="checkmark" class="hidden w-20 h-20 text-green-500 mb-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+    </svg>
+    <svg id="cross" class="hidden w-20 h-20 text-red-500 mb-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 6L18 18M6 18L18 6"/>
+    </svg>
+  </div>
+  <p id="successText" class="mt-4 text-lg font-semibold text-green-600 hidden text-success">Logged in successfully</p>
+  <p id="failText" class="mt-4 text-lg font-semibold text-red-600 hidden text-fail">Invalid username or password</p>
+</div>
+
+<!-- SIGNUP MODAL -->
+<div id="signupModal" class="fixed inset-0 hidden z-60 items-center justify-center bg-black/40">
+  <div id="signupContent" class="bg-white w-full max-w-md rounded-2xl shadow-xl p-8 relative mx-4">
+    <button onclick="closeSignup()" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 text-xl">&times;</button>
+
+    <h2 class="text-2xl font-bold text-center">Create Account</h2>
+    <p class="text-center text-gray-500 mb-6">Sign up to continue</p>
+
+
+   <input
+  id="signupUsername"
+  type="text"
+  placeholder="Username"
+  class="w-full px-4 py-2 mb-4
+         border border-gray-400
+         rounded-lg
+         bg-transparent
+         text-gray-800
+         placeholder-gray-500
+         focus:outline-none
+         focus:border-gray-600
+         focus:ring-2 focus:ring-indigo-500">
+
+<input
+  id="signupPassword"
+  type="password"
+  placeholder="Password"
+  class="w-full px-4 py-2 mb-4
+         border border-gray-400
+         rounded-lg
+         bg-transparent
+         text-gray-800
+         placeholder-gray-500
+         focus:outline-none
+         focus:border-gray-600
+         focus:ring-2 focus:ring-indigo-500">
+
+<input
+  id="signupConfirm"
+  type="password"
+  placeholder="Confirm Password"
+  class="w-full px-4 py-2 mb-4
+         border border-gray-400
+         rounded-lg
+         bg-transparent
+         text-gray-800
+         placeholder-gray-500
+         focus:outline-none
+         focus:border-gray-600
+         focus:ring-2 focus:ring-indigo-500">
+
+    <p id="signupError" class="text-red-600 text-sm mb-4 hidden"></p>
+
+    <button id="signupBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-semibold transition">
+      Sign Up
+    </button>
+
+    <p class="text-center text-gray-500 mt-6">
+      Already have an account?
+      <a href="javascript:void(0)" onclick="switchToLogin()" class="text-indigo-600 hover:underline">Login</a>
+    </p>
+  </div>
+</div>
+
+<div id="successLayer" class="hidden absolute inset-0 bg-white flex flex-col items-center justify-center z-50">
+  <div class="relative flex flex-col items-center justify-center">
+    <div id="pulseBg" class="hidden pulse-bg"></div>
+    <div id="spinner" class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-6"></div>
+    <svg id="checkmark" class="hidden w-20 h-20 text-green-500 mb-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+    </svg>
+    <svg id="cross" class="hidden w-20 h-20 text-red-500 mb-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 6L18 18M6 18L18 6"/>
+    </svg>
+  </div>
+  <p id="successText" class="mt-4 text-lg font-semibold text-green-600 hidden text-success">Logged in successfully</p>
+  <p id="failText" class="mt-4 text-lg font-semibold text-red-600 hidden text-fail">Invalid username or password</p>
+</div>
+
+<!-- Forgot Password Modal -->
+<div id="forgotModal" class="fixed inset-0 hidden z-60 items-center justify-center bg-black/40">
+  <div id="forgotContent" class="bg-white w-full max-w-md rounded-2xl shadow-xl p-8 relative mx-4">
+    <button onclick="closeForgot()" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 text-xl">&times;</button>
+
+    <h2 class="text-2xl font-bold text-center">Forgot Password</h2>
+    <p class="text-center text-gray-500 mb-6">Enter your username or email to reset password</p>
+
+    <input
+  id="forgotUsername"
+  type="text"
+  placeholder="Username or email"
+  class="w-full px-4 py-2 mb-4
+         border border-gray-400
+         rounded-lg
+         bg-transparent
+         text-gray-800
+         placeholder-gray-500
+         focus:outline-none
+         focus:border-gray-600
+         focus:ring-2 focus:ring-indigo-500">
+
+    <p id="forgotError" class="text-red-600 text-sm mb-4 hidden"></p>
+
+    <button id="forgotBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-semibold transition">
+      Reset Password
+    </button>
+
+    <p class="text-center text-gray-500 mt-6">Remembered your password? <a href="#" onclick="switchToLoginFromForgot()" class="text-indigo-600 hover:underline">Login</a></p>
+  </div>
+</div>
+
+
+
+
+
+<script src="assets/js/script.js"></script>
 
 </body>
 </html>

@@ -6,7 +6,7 @@
 <title>Explore</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css">
+   <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css">
 
 <script>
 tailwind.config = {
@@ -260,15 +260,13 @@ tailwind.config = {
 
 <!-- ACTION BAR -->
 <div class="flex items-center gap-6 border-t mt-8 pt-4 text-gray-600">
+  <label class="flex items-center gap-2 cursor-pointer select-none">
+    <input type="checkbox" class="hidden peer">
+    <i class="ph ph-heart text-xl peer-checked:ph-fill peer-checked:text-red-500 transition"></i>
+    <span class="text-sm font-medium peer-checked:text-red-500">1.2k</span>
+  </label>
 
-  <button class="flex items-center gap-2 hover:text-red-500 transition">
-    <i class="ph ph-heart text-xl"></i>
-    <span class="text-sm font-medium">1.2k</span>
-  </button>
-
-  <button
-    id="commentToggle"
-    class="flex items-center gap-2 hover:text-neon transition">
+  <button id="commentToggle" class="flex items-center gap-2 hover:text-neon transition">
     <i class="ph ph-chat-circle text-xl"></i>
     <span class="text-sm font-medium">Comments</span>
   </button>
@@ -279,158 +277,392 @@ tailwind.config = {
   </button>
 </div>
 
-<!-- COMMENTS WRAPPER -->
-<div
-  id="commentsSection"
-  class="mt-10 opacity-0 translate-y-12 max-h-0 overflow-hidden
-         transition-all duration-500 ease-in-out">
+<!-- COMMENTS -->
+<div id="commentsSection"
+  class="mt-10 opacity-0 translate-y-12 overflow-hidden transition-all duration-500"
+  style="max-height:0">
 
-  <h2 class="text-xl sm:text-2xl font-bold mb-6">
-    Comments
-  </h2>
+  <h2 class="text-xl font-bold mb-6">Comments</h2>
 
-  <!-- COMMENT LIST -->
   <div id="commentList" class="space-y-6">
+    <!-- DEFAULT COMMENT -->
+    <div class="commentItem">
+      <div class="flex gap-3">
+        <img src="https://i.pravatar.cc/42" class="w-9 h-9 rounded-full">
+        <div class="flex-1">
 
-    <div class="flex gap-3">
-      <img src="https://i.pravatar.cc/42" class="w-9 h-9 rounded-full">
-      <div>
-        <div class="flex items-center gap-2 text-xs sm:text-sm">
-          <span class="font-semibold">Jane Doe</span>
-          <span class="text-gray-400">2h ago</span>
-        </div>
-        <p class="text-gray-700 mt-1 text-sm sm:text-base">
-          This article is very insightful. Thanks for sharing!
-        </p>
-      </div>
-    </div>
+          <div class="text-sm font-semibold">Jane Doe</div>
+          <div class="bg-gray-100 rounded-2xl p-3 mt-1 text-sm">
+            This article is very insightful.
+          </div>
 
-  </div>
+          <div class="flex gap-4 mt-1 text-xs text-gray-500">
+            <button class="likeBtn flex gap-1">
+              <i class="ph ph-heart"></i> <span>0</span>
+            </button>
+            <button class="replyBtn">Reply</button>
+          </div>
 
-<!-- ADD COMMENT (IMPROVED) -->
-<div class="mt-10 pt-6 border-t">
+          <!-- REPLIES -->
+          <div class="repliesList mt-2 ml-12 space-y-3"></div>
 
-  <div class="flex gap-3 items-start">
+          <!-- REPLY INPUT -->
+          <div class="replySection hidden mt-2 ml-12">
+            <div class="flex gap-2 relative">
+              <textarea
+                class="replyInput flex-1 resize-none rounded-2xl border px-3 py-2 text-sm"
+                rows="1" placeholder="Write a reply..."></textarea>
 
-    <!-- USER AVATAR -->
-    <img
-      src="https://i.pravatar.cc/50"
-      class="w-10 h-10 rounded-full flex-shrink-0"
-      alt="User">
+              <!-- Recording animation inside reply -->
+              <div class="recordingOverlay hidden absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div class="recordingWave"></div>
+                <span class="ml-2 recordingTimer">0s</span>
+              </div>
 
-    <!-- EDITOR -->
-    <div class="flex-1">
+              <button class="replyActionBtn w-12 h-12 flex items-center justify-center rounded-full bg-gray-200 text-xl">🎤</button>
+              <button class="cancelReplyBtn px-4 rounded-2xl border text-sm">Cancel</button>
+            </div>
+          </div>
 
-      <!-- INPUT -->
-      <textarea
-        id="commentInput"
-        placeholder="Add your thoughts…"
-        rows="1"
-        class="w-full resize-none rounded-xl border border-gray-300
-               px-4 py-3 text-sm sm:text-base
-               focus:outline-none focus:ring-2 focus:ring-neon
-               transition-all duration-300"></textarea>
-
-      <!-- ACTION ROW (HIDDEN INITIALLY) -->
-      <div
-        id="commentActions"
-        class="flex items-center justify-between mt-3
-               opacity-0 max-h-0 overflow-hidden
-               transition-all duration-300">
-
-        <!-- LEFT (HINT) -->
-        <span class="text-xs text-gray-400">
-          Be respectful. No spam.
-        </span>
-
-        <!-- RIGHT (BUTTONS) -->
-        <div class="flex gap-2">
-          <button
-            id="cancelComment"
-            class="px-4 py-2 rounded-lg text-sm
-                   text-gray-600 hover:bg-gray-100 transition">
-            Cancel
-          </button>
-
-          <button
-            id="postComment"
-            class="px-5 py-2 rounded-lg text-sm font-semibold
-                   bg-neon text-black hover:brightness-110 transition">
-            Post
-          </button>
         </div>
       </div>
+    </div>
+  </div>
 
+  <!-- ADD COMMENT -->
+  <div class="mt-10 pt-6 border-t">
+    <div class="flex gap-3 relative">
+      <img src="https://i.pravatar.cc/50" class="w-10 h-10 rounded-full">
+      <textarea id="commentInput"
+        class="flex-1 resize-none rounded-2xl border px-4 py-3 text-sm"
+        rows="1" placeholder="Add a comment…"></textarea>
+
+      <!-- Recording animation inside comment -->
+      <div id="commentRecordingOverlay"
+        class="recordingOverlay hidden absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div class="recordingWave"></div>
+        <span class="ml-2 recordingTimer">0s</span>
+      </div>
+
+      <button id="commentActionBtn"
+        class="w-12 h-12 rounded-full bg-gray-200 text-xl">🎤</button>
     </div>
   </div>
 </div>
-
-</div>
-
-    </div>
-  </div>
-</div>
-
-
 
 <script>
 const toggleBtn = document.getElementById("commentToggle");
 const comments = document.getElementById("commentsSection");
-
-let open = false;
-
-toggleBtn.addEventListener("click", () => {
-  open = !open;
-
-  if (open) {
-    comments.classList.remove("opacity-0", "translate-y-12", "max-h-0");
-    comments.classList.add("opacity-100", "translate-y-0", "max-h-[3000px]");
-
-    // 🔥 SCROLL INTO VIEW (DESKTOP + MOBILE)
-    setTimeout(() => {
-      comments.scrollIntoView({ behavior: "smooth", block: "start" });
-    }, 150);
-
-  } else {
-    comments.classList.add("opacity-0", "translate-y-12", "max-h-0");
-    comments.classList.remove("opacity-100", "translate-y-0", "max-h-[3000px]");
-  }
-});
-
-
-/* ================= POST NEW COMMENT ================= */
-const postBtn = document.getElementById("postComment");
 const input = document.getElementById("commentInput");
+const commentActionBtn = document.getElementById("commentActionBtn");
+const commentOverlay = document.getElementById("commentRecordingOverlay");
 const list = document.getElementById("commentList");
 
-postBtn.addEventListener("click", () => {
-  const text = input.value.trim();
-  if (!text) return;
+let open = false;
+let activeRecorder, activeChunks, activeTextarea, activeBtn, activeCallback, activeOverlay, activeInterval;
 
-  const comment = document.createElement("div");
-  comment.className = "flex gap-3";
+/* ================= TOGGLE COMMENTS ================= */
+toggleBtn.onclick = () => {
+  open = !open;
+  if(open){
+    comments.classList.remove("opacity-0","translate-y-12");
+    comments.classList.add("opacity-100","translate-y-0");
+    comments.style.maxHeight = comments.scrollHeight + "px";
+  }else{
+    comments.classList.add("opacity-0","translate-y-12");
+    comments.classList.remove("opacity-100","translate-y-0");
+    comments.style.maxHeight = "0px";
+  }
+};
 
-  comment.innerHTML = `
-    <img src="https://i.pravatar.cc/48" class="w-9 h-9 rounded-full">
-    <div>
-      <div class="flex items-center gap-2 text-xs sm:text-sm">
-        <span class="font-semibold">You</span>
-        <span class="text-gray-400">Just now</span>
+/* ================= AUTO RESIZE ================= */
+function autoResize(t){
+  t.style.height = "auto";
+  t.style.height = t.scrollHeight + "px";
+}
+
+/* ================= BUTTON STATE ================= */
+function updateBtn(t,b){
+  if(t.value.trim()){
+    b.textContent = "Post";
+    b.className = "px-4 py-2 rounded-2xl bg-neon text-black text-sm";
+  }else{
+    b.textContent = "🎤";
+    b.className = "w-12 h-12 rounded-full bg-gray-200 text-xl";
+  }
+}
+
+input.oninput = () => {
+  autoResize(input);
+  updateBtn(input, commentActionBtn);
+};
+
+/* ================= AUDIO / TEXT HANDLER ================= */
+async function handleAction(t,b,cb,overlay=null){
+  if(t.value.trim()){
+    cb({text:t.value.trim()});
+    t.value="";
+    autoResize(t);
+    updateBtn(t,b);
+    comments.style.maxHeight = comments.scrollHeight+"px";
+    return;
+  }
+
+  if(activeRecorder){
+    activeRecorder.stop();
+    return;
+  }
+
+  const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+  const recorder = new MediaRecorder(stream);
+  activeRecorder = recorder;
+  activeChunks = [];
+  activeTextarea = t;
+  activeBtn = b;
+  activeCallback = cb;
+  activeOverlay = overlay;
+
+  if(activeOverlay){
+    activeOverlay.classList.add("active"); // SHOW overlay
+    let sec=0;
+    const timerSpan = activeOverlay.querySelector(".recordingTimer");
+    activeInterval = setInterval(()=>{
+      sec++;
+      if(timerSpan) timerSpan.textContent=`${sec}s`;
+    },1000);
+  }
+
+  recorder.ondataavailable = e=>activeChunks.push(e.data);
+  recorder.onstop = () => {
+    const blob = new Blob(activeChunks,{type:"audio/webm"});
+    activeCallback({audio: URL.createObjectURL(blob)});
+    if(activeOverlay){
+      activeOverlay.classList.remove("active"); // HIDE overlay
+      clearInterval(activeInterval);
+    }
+    activeRecorder = null;
+    updateBtn(activeTextarea,activeBtn);
+    comments.style.maxHeight = comments.scrollHeight+"px";
+  };
+
+  recorder.start();
+}
+
+
+/* ================= COMMENT BUTTON ================= */
+commentActionBtn.onclick = () => {
+  handleAction(input,commentActionBtn,addComment,commentOverlay);
+};
+
+/* ================= GLOBAL EVENTS ================= */
+document.onclick = e => {
+  const btn = e.target.closest("button");
+  if(!btn) return;
+
+  if(btn.classList.contains("likeBtn")){
+    const i = btn.querySelector("i");
+    const s = btn.querySelector("span");
+    i.classList.toggle("ph-fill");
+    i.classList.toggle("text-red-500");
+    s.textContent = +s.textContent + (i.classList.contains("ph-fill")?1:-1);
+  }
+
+  if(btn.classList.contains("replyBtn")){
+    btn.closest(".commentItem").querySelector(".replySection").classList.toggle("hidden");
+    comments.style.maxHeight = comments.scrollHeight+"px";
+  }
+
+  if(btn.classList.contains("cancelReplyBtn")){
+    btn.closest(".replySection").classList.add("hidden");
+  }
+
+  if(btn.classList.contains("replyActionBtn")){
+    const section = btn.closest(".replySection");
+    const t = section.querySelector(".replyInput");
+    const overlay = section.querySelector(".recordingOverlay");
+
+    handleAction(t,btn,data=>{
+      addReply(section,data);
+      section.classList.add("hidden");
+      t.value="";
+    },overlay);
+  }
+};
+
+/* ================= ADD COMMENT ================= */
+function addComment({text="", audio=""}){
+  const c = document.createElement("div");
+  c.className = "commentItem";
+  c.innerHTML=`
+    <div class="flex gap-3">
+      <img src="https://i.pravatar.cc/48" class="w-9 h-9 rounded-full">
+      <div class="flex-1">
+        <div class="font-semibold text-sm">You</div>
+        ${text? `<div class="bg-gray-100 p-3 rounded-2xl mt-1">${text}</div>`:""}
+        ${audio? `<audio controls class="mt-2 w-full"><source src="${audio}"></audio>`:""}
+        <div class="flex gap-4 mt-1 text-xs text-gray-500">
+          <button class="likeBtn"><i class="ph ph-heart"></i> <span>0</span></button>
+          <button class="replyBtn">Reply</button>
+        </div>
+        <div class="repliesList mt-2 ml-12 space-y-3"></div>
+        <div class="replySection hidden mt-2 ml-12">
+          <div class="flex gap-2 relative">
+            <textarea class="replyInput flex-1 resize-none rounded-2xl border px-3 py-2 w-full"></textarea>
+            <div class="recordingOverlay hidden absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div class="recordingWave"></div>
+              <span class="ml-2 recordingTimer">0s</span>
+            </div>
+            <button class="replyActionBtn w-12 h-12 bg-gray-200 rounded-full">🎤</button>
+            <button class="cancelReplyBtn px-4 border rounded-2xl">Cancel</button>
+          </div>
+        </div>
       </div>
-      <p class="text-gray-700 mt-1 text-sm sm:text-base">
-        ${text}
-      </p>
-    </div>
-  `;
+    </div>`;
+  list.appendChild(c);
+  comments.style.maxHeight = comments.scrollHeight+"px";
+}
 
-  list.appendChild(comment); // 👈 stays above post box
-  input.value = "";
-});
+/* ================= ADD REPLY ================= */
+function addReply(section,{text="", audio=""}){
+  const list = section.closest(".commentItem").querySelector(".repliesList");
+  const r = document.createElement("div");
+  r.className = "flex gap-3 items-start";
+  r.innerHTML=`
+    <img src="https://i.pravatar.cc/40" class="w-8 h-8 rounded-full mt-1">
+    <div class="flex-1">
+      <div class="bg-gray-100 p-2 rounded-xl min-h-[44px]">
+        ${text? `<div class="text-sm mb-1">${text}</div>`:""}
+        ${audio? `<audio controls class="w-full"><source src="${audio}"></audio>`:""}
+      </div>
+      <div class="flex gap-4 mt-1 text-xs text-gray-500">
+        <button class="likeBtn flex items-center gap-1">
+          <i class="ph ph-heart"></i>
+          <span>0</span>
+        </button>
+      </div>
+    </div>`;
+  list.appendChild(r);
+  comments.style.maxHeight = comments.scrollHeight+"px";
+}
 </script>
 
+<style>
+/* ===== RECORDING ANIMATION ===== */
+.recordingOverlay {
+  display: none; /* hidden by default */
+  background: transparent; /* no bg */
+  border-radius: inherit;
+  z-index: 10;
+  font-weight: 600;
+  color: #ef4444; /* spikes color */
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  gap: 6px;
+}
+
+.recordingOverlay.active {
+  display: flex; /* show overlay when recording */
+}
+
+.recordingWave {
+  width: 24px;
+  height: 6px;
+  background: rgba(239,68,68,0.6);
+  border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+}
+
+.recordingWave::before {
+  content: '';
+  position: absolute;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(239,68,68,1), transparent);
+  animation: waveMove 1s linear infinite;
+}
+
+@keyframes waveMove {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+/* ===== RECORDING BUTTON ===== */
+.recording {
+  position: relative;
+  background: transparent !important; /* removed bg */
+  color: #ef4444 !important;
+  border-radius: 9999px !important;
+  padding: 0 12px !important;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: center;
+  min-width: 48px;
+  transition: all 0.2s;
+}
+
+.recordingTimer {
+  font-size: 13px;
+  font-weight: 600;
+}
+</style>
+
+    </div>
+  </div>
+</div>
 
 
 
+
+
+
+<script>
+  document.getElementById("shareBtn").addEventListener("click", async () => {
+    const shareData = {
+      title: "Markets React to Global Oil Prices",
+      text: "Interesting read on how global oil prices are impacting markets.",
+      url: window.location.href
+    };
+
+    if (navigator.share) {
+      try {
+        await navigator.share(shareData);
+      } catch (err) {
+        console.log("Share cancelled");
+      }
+    } else {
+      openShareFallback(shareData);
+    }
+  });
+
+  function openShareFallback({ title, url }) {
+    const encodedText = encodeURIComponent(`${title}\n${url}`);
+
+    const popup = `
+      <div id="sharePopup"
+        class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center">
+        <div class="bg-white rounded-xl p-6 w-80 space-y-4">
+          <h3 class="font-bold text-lg">Share</h3>
+
+          <a href="https://wa.me/?text=${encodedText}" target="_blank" class="block">WhatsApp</a>
+          <a href="https://twitter.com/intent/tweet?text=${encodedText}" target="_blank" class="block">X / Twitter</a>
+          <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}" target="_blank" class="block">Facebook</a>
+          <a href="mailto:?subject=${encodeURIComponent(title)}&body=${encodedText}" class="block">Email</a>
+
+          <button onclick="document.getElementById('sharePopup').remove()"
+            class="mt-4 w-full bg-gray-100 rounded-lg py-2">
+            Close
+          </button>
+        </div>
+      </div>
+    `;
+
+    document.body.insertAdjacentHTML("beforeend", popup);
+  }
+</script>
 
 
 

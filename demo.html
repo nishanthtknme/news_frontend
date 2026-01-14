@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Modal</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+
+</style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+
+<!-- Open Button -->
+<button onclick="openModal()" class="px-6 py-3 bg-indigo-600 text-white rounded-lg shadow hover:bg-indigo-700 transition">
+  Open Login
+</button>
+
+<!-- Modal -->
+<div id="modal" class="fixed inset-0 hidden items-center justify-center bg-black/40">
+  <div id="modalContent" class="bg-white w-full max-w-md rounded-2xl shadow-xl p-8 relative mx-4">
+
+    <!-- Close -->
+    <button onclick="closeModal()" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 text-xl">&times;</button>
+
+    <h2 class="text-2xl font-bold text-center">Welcome Back</h2>
+    <p class="text-center text-gray-500 mb-6">Login to continue</p>
+
+    <button class="w-full flex items-center justify-center gap-3 border py-3 rounded-lg hover:bg-gray-50 transition mb-5">
+      <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5">
+      Continue with Google
+    </button>
+
+    <div class="flex items-center gap-4 mb-5">
+      <hr class="flex-1">
+      <span class="text-gray-400 text-sm">or</span>
+      <hr class="flex-1">
+    </div>
+
+    <input id="username" type="text" placeholder="Username or email" class="w-full px-4 py-2 border rounded-lg mb-4 focus:ring-2 focus:ring-indigo-500">
+    <input id="password" type="password" placeholder="Password" class="w-full px-4 py-2 border rounded-lg mb-2 focus:ring-2 focus:ring-indigo-500">
+
+    <div class="text-right mb-4"><a href="#" class="text-sm text-indigo-600 hover:underline">Forgot password?</a></div>
+
+    <button id="loginBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-semibold transition" onclick="simulateLogin()">
+      Login
+    </button>
+
+    <p class="text-center text-gray-500 mt-6">Don't have an account? <a href="#" class="text-indigo-600 hover:underline">Sign up</a></p>
+  </div>
+</div>
+
+<!-- SUCCESS / FAIL LAYERS -->
+<div id="successLayer" class="hidden absolute inset-0 bg-white flex flex-col items-center justify-center z-50">
+  <div class="relative flex flex-col items-center justify-center">
+    <div id="pulseBg" class="hidden pulse-bg"></div>
+    <div id="spinner" class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-6"></div>
+    <svg id="checkmark" class="hidden w-20 h-20 text-green-500 mb-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+    </svg>
+    <svg id="cross" class="hidden w-20 h-20 text-red-500 mb-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 6L18 18M6 18L18 6"/>
+    </svg>
+  </div>
+  <p id="successText" class="mt-4 text-lg font-semibold text-green-600 hidden text-success">Logged in successfully</p>
+  <p id="failText" class="mt-4 text-lg font-semibold text-red-600 hidden text-fail">Invalid username or password</p>
+</div>
+
+<script>
+
+</script>
+</body>
+</html>
