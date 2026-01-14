@@ -85,125 +85,118 @@ tailwind.config = {
 
 
 <!-- ================= NAVBAR ================= -->
-<nav class="fixed top-0 inset-x-0 z-50 border-b transition-colors duration-300">
+<nav id="navbar"
+     class="fixed top-0 inset-x-0 z-50 transition-colors duration-300 bg-transparent border-b border-transparent">
   <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
 
     <h1 class="font-bold tracking-wide text-lg">EXPLORE</h1>
 
     <!-- DESKTOP SEARCH -->
     <div class="hidden md:flex flex-1 max-w-3xl mx-6">
-      <div class="flex w-full items-center gap-2 px-4 py-2 rounded-full
-                  border transition-colors duration-300">
-        <input id="desktopSearch"
-          placeholder="Search…"
-          class="flex-1 bg-transparent text-sm outline-none transition-colors duration-300"/>
-        <select class="filter transition-colors duration-300"><option>Categories</option></select>
-        <select class="filter transition-colors duration-300"><option>Media</option></select>
-        <input type="date" class="filter [color-scheme:dark] transition-colors duration-300" />
+      <div class="flex w-full items-center gap-2 px-4 py-2 rounded-full border transition-colors duration-300">
+        <input id="desktopSearch" placeholder="Search…" class="flex-1 bg-transparent text-sm outline-none transition-colors duration-300"/>
+        <select id="desktopCategory" class="filter transition-colors duration-300">
+          <option value="">Categories</option>
+          <option value="News">News</option>
+          <option value="Politics">Politics</option>
+          <option value="Sports">Sports</option>
+          <option value="Tech">Tech</option>
+          <option value="Entertainment">Entertainment</option>
+          <option value="Travel">Travel</option>
+        </select>
+
+        <select id="desktopMedia" class="filter transition-colors duration-300">
+          <option value="">Media</option>
+          <option value="Image">Image</option>
+          <option value="Video">Video</option>
+        </select>
+
+        <input id="desktopDate" type="date" class="filter [color-scheme:dark] transition-colors duration-300" />
       </div>
     </div>
 
-<!-- THEME TOGGLE (DESKTOP ONLY) -->
-<div class="hidden md:flex items-center">
-  <div class="toggle-button-container">
-    <div class="btn btn-pill" id="button-9">
-      <input type="checkbox" class="checkbox" id="themeToggle">
-
-      <div class="knob">
-        <i class="ph ph-sun icon-sun"></i>
-        <i class="ph ph-moon icon-moon"></i>
-        <span></span>
+    <!-- THEME TOGGLE (DESKTOP ONLY) -->
+    <div class="hidden md:flex items-center">
+      <div class="toggle-button-container">
+        <div class="btn btn-pill" id="button-9">
+          <input type="checkbox" class="checkbox" id="themeToggle">
+          <div class="knob">
+            <i class="ph ph-sun icon-sun"></i>
+            <i class="ph ph-moon icon-moon"></i>
+            <span></span>
+          </div>
+          <div class="btn-bg"></div>
+        </div>
       </div>
-
-      <div class="btn-bg"></div>
     </div>
-  </div>
-</div>
 
-    <!-- TOGGLE -->
-    <button id="navToggle"
-      class="text-2xl px-2 hover:text-neon transition select-none">☰</button>
+    <!-- HAMBURGER TOGGLE -->
+    <button id="navToggle" class="text-2xl px-2 hover:text-neon transition select-none">☰</button>
   </div>
 </nav>
 
 <!-- ================= DRAWER ================= -->
 <div id="navDrawer"
-  class=" fixed top-0 right-0 z-50
-         h-screen w-full sm:w-[420px]
-         bg-zinc-900/95 backdrop-blur border-l border-white/10
-         transition-transform duration-300 ease-out drawer">
+     class="fixed top-0 right-0 z-50 h-screen w-full sm:w-[420px]
+            bg-zinc-900/95 backdrop-blur border-l border-white/10
+            transition-transform duration-300 ease-out translate-x-full">
 
-
-  <div class="flex items-center justify-between px-6 py-4 border-b border-white/10 transition-colors duration-300">
+  <div class="flex items-center justify-between px-6 py-4 border-b border-white/10">
     <h2 class="font-semibold text-lg">Filters</h2>
     <button id="closeDrawer" class="text-2xl hover:text-neon">✕</button>
   </div>
 
   <div class="p-6 space-y-5 overflow-y-auto h-[calc(100vh-64px)]">
+    <input id="drawerSearch" placeholder="Search news, blogs, releases…" class="w-full text-sm px-4 py-3 rounded-full bg-transparent border border-gray-400 placeholder-gray-500 outline-none focus:border-gray-600 focus:ring-2 focus:ring-indigo-500 transition-colors duration-300">
 
-    <input id="drawerSearch"
-      placeholder="Search news, blogs, releases…"
-      class="w-full text-sm px-4 py-3 rounded-full outline-none transition-colors duration-300"/>
+    <select id="drawerCategory" class="filter w-full transition-colors duration-300 mt-3">
+      <option value="">Categories</option>
+      <option value="News">News</option>
+      <option value="Politics">Politics</option>
+      <option value="Sports">Sports</option>
+      <option value="Tech">Tech</option>
+      <option value="Entertainment">Entertainment</option>
+      <option value="Travel">Travel</option>
+    </select>
 
-    <div class="space-y-3">
-      <select class="filter w-full transition-colors duration-300">
-        <option>Categories</option>
-        <option>News</option>
-        <option>Blogs</option>
-        <option>Releases</option>
-      </select>
+    <select id="drawerMedia" class="filter w-full transition-colors duration-300 mt-3">
+      <option value="">Media</option>
+      <option value="Image">Image</option>
+      <option value="Video">Video</option>
+    </select>
 
-      <select class="filter w-full transition-colors duration-300">
-        <option>Media</option>
-        <option>Images</option>
-        <option>Videos</option>
-      </select>
+    <input id="drawerDate" type="date" class="filter w-full transition-colors duration-300 mt-3">
 
-      <input type="date" class="filter w-full transition-colors duration-300" />
+    <select class="filter w-full transition-colors duration-300 mt-3">
+      <option>Latest</option>
+      <option>Oldest</option>
+    </select>
 
-      <select class="filter w-full transition-colors duration-300">
-        <option>Latest</option>
-        <option>Oldest</option>
-      </select>
-    </div>
+    <button id="applyFiltersBtn" class="w-full py-3 rounded-xl bg-neon text-black font-semibold mt-4">Apply Filters</button>
 
-    <button class="w-full py-3 rounded-xl bg-neon text-black font-semibold">
-      Apply Filters
-    </button>
-      <!-- MOBILE THEME TOGGLE (INSIDE DRAWER) -->
-<div class="md:hidden flex items-center justify-between w-full">
-  <span class="text-sm font-medium select-none">
-    Theme
-  </span>
-
-  <div class="toggle-button-container">
-    <div class="btn btn-pill" id="button-9-mobile">
-      <input type="checkbox" class="checkbox" id="themeToggleMobile">
-
-      <div class="knob">
-        <i class="ph ph-sun icon-sun"></i>
-        <i class="ph ph-moon icon-moon"></i>
-        <span></span>
-      </div>
-
-      <div class="btn-bg"></div>
-    </div>
-  </div>
-</div>
-
-
-<!--        <div class="btn-bg"></div>-->
+    <!-- MOBILE THEME TOGGLE -->
+    <div class="md:hidden flex items-center justify-between w-full mt-4">
+      <span class="text-sm font-medium select-none">Theme</span>
+      <div class="toggle-button-container">
+        <div class="btn btn-pill" id="button-9-mobile">
+          <input type="checkbox" class="checkbox" id="themeToggleMobile">
+          <div class="knob">
+            <i class="ph ph-sun icon-sun"></i>
+            <i class="ph ph-moon icon-moon"></i>
+            <span></span>
+          </div>
+          <div class="btn-bg"></div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
-
+    <h3 onclick="openModal()" class="cursor-pointer select-none mt-6">Login</h3>
   </div>
 </div>
 
 <!-- BACKDROP -->
 <div id="backdrop" class="hidden fixed inset-0 bg-black/60 z-40"></div>
+
 
 
 <!-- ================= NEWS PAGE ================= -->

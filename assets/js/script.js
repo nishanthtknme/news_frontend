@@ -1,27 +1,62 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* ================= DRAWER ================= */
-  const toggle = document.getElementById('navToggle');
-  const drawer = document.getElementById('navDrawer');
-  const closeBtn = document.getElementById('closeDrawer');
-  const backdrop = document.getElementById('backdrop');
-  const applyBtn = document.getElementById('applyFiltersBtn');
+// ================= NAVBAR & DRAWER =================
+const toggle = document.getElementById('navToggle');
+const drawer = document.getElementById('navDrawer');
+const closeBtn = document.getElementById('closeDrawer');
+const backdrop = document.getElementById('backdrop');
+const navbar = document.querySelector('nav'); // navbar element
 
-  const openDrawer = () => {
-    drawer?.classList.remove("translate-x-full");
-    backdrop?.classList.remove("hidden");
-  };
+// ---------------- OPEN DRAWER ----------------
+toggle?.addEventListener('click', () => {
+  drawer.classList.remove('translate-x-full');
+  drawer.classList.add('translate-x-0');
+  backdrop.classList.remove('hidden');
+  document.body.classList.add('overflow-hidden'); // prevent scrolling
+});
 
-  const closeDrawer = () => {
-    drawer?.classList.add("translate-x-full");
-    backdrop?.classList.add("hidden");
-  };
+// ---------------- CLOSE DRAWER ----------------
+function closeDrawer() {
+  drawer.classList.add('translate-x-full');
+  drawer.classList.remove('translate-x-0');
+  backdrop.classList.add('hidden');
+  document.body.classList.remove('overflow-hidden');
+}
 
-  toggle?.addEventListener("click", openDrawer);
-  closeBtn?.addEventListener("click", closeDrawer);
-  backdrop?.addEventListener("click", closeDrawer);
-  document.addEventListener("keydown", e => e.key === "Escape" && closeDrawer());
-  applyBtn?.addEventListener("click", () => { applyFilters(); closeDrawer(); });
+// Close events
+closeBtn?.addEventListener('click', closeDrawer);
+backdrop?.addEventListener('click', closeDrawer);
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') closeDrawer();
+});
+
+// ---------------- NAVBAR BLUR ON SCROLL ----------------
+function updateNavbar() {
+  if(window.scrollY > 20) {
+    navbar.classList.add('backdrop-blur', 'bg-white/5'); // subtle blur, almost transparent
+  } else {
+    navbar.classList.remove('backdrop-blur', 'bg-white/5');
+  }
+}
+window.addEventListener('scroll', updateNavbar);
+updateNavbar(); // initial check
+
+// ---------------- CLOSE DRAWER ----------------
+function closeDrawer() {
+  drawer.classList.add('translate-x-full');
+  drawer.classList.remove('translate-x-0');
+  backdrop.classList.add('hidden');
+  document.body.classList.remove('overflow-hidden');
+}
+
+// Close events
+closeBtn?.addEventListener('click', closeDrawer);
+backdrop?.addEventListener('click', closeDrawer);
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape') closeDrawer();
+});
+
+
 
   /* ================= FILTERS ================= */
   const grid = document.getElementById("grid");
@@ -99,22 +134,97 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  /* ================= STORY VIEWER ================= */
-  const storyCards = document.querySelectorAll(".story-card");
-  const storyViewer = document.getElementById("storyViewer");
-  const storyImage = document.getElementById("storyImage");
-  const closeStory = document.getElementById("closeStory");
+const storyCards = document.querySelectorAll(".story-card");
+const storyViewer = document.getElementById("storyViewer");
+const storyImage = document.getElementById("storyImage");
+const closeStory = document.getElementById("closeStory");
+const progressBar = document.getElementById("progressBar");
+const prevStoryZone = document.getElementById("prevStory");
+const nextStoryZone = document.getElementById("nextStory");
 
-  storyCards.forEach(card => {
-    card.addEventListener("click", () => {
-      storyViewer.classList.remove("hidden");
-      storyImage.src = card.dataset.story;
-    });
-  });
-  closeStory?.addEventListener("click", () => {
-    storyViewer.classList.add("hidden");
-    storyImage.src = "";
-  });
+let currentIndex = 0;
+let storyTimer;
+let progress = 0;
+const storyDuration = 5000; // 5 seconds
+
+function startProgress() {
+  progress = 0;
+  progressBar.style.width = "0%";
+  const step = 50; // update every 50ms
+  storyTimer = setInterval(() => {
+    progress += step;
+    const percent = Math.min((progress / storyDuration) * 100, 100);
+    progressBar.style.width = percent + "%";
+    if (progress >= storyDuration) {
+      clearInterval(storyTimer);
+      nextStory();
+    }
+  }, step);
+}
+
+function openStory(index) {
+  currentIndex = index;
+  const card = storyCards[currentIndex];
+
+  // Show viewer
+  storyViewer.classList.remove("hidden");
+  storyImage.src = card.dataset.story;
+
+  // Mark as viewed
+  card.dataset.viewed = "true";
+  card.classList.remove("bg-red-600");
+
+  // Move story to end
+  card.parentNode.appendChild(card);
+
+  // Start progress
+  clearInterval(storyTimer);
+  startProgress();
+}
+
+function nextStory() {
+  currentIndex++;
+  if (currentIndex >= storyCards.length) {
+    closeStoryViewer();
+    return;
+  }
+  openStory(currentIndex);
+}
+
+function prevStory() {
+  currentIndex--;
+  if (currentIndex < 0) {
+    currentIndex = 0;
+    return;
+  }
+  openStory(currentIndex);
+}
+
+function closeStoryViewer() {
+  storyViewer.classList.add("hidden");
+  storyImage.src = "";
+  clearInterval(storyTimer);
+  progressBar.style.width = "0%";
+}
+
+// Card click to open
+storyCards.forEach((card, index) => {
+  card.addEventListener("click", () => openStory(index));
+});
+
+// Close story
+closeStory.addEventListener("click", closeStoryViewer);
+
+// Tap zones
+nextStoryZone.addEventListener("click", () => {
+  clearInterval(storyTimer);
+  nextStory();
+});
+
+prevStoryZone.addEventListener("click", () => {
+  clearInterval(storyTimer);
+  prevStory();
+});
 
   /* ================= LOGIN/SIGNUP/FORGOT ================= */
   const modal = document.getElementById("modal");
