@@ -384,13 +384,10 @@ tailwind.config = {
 
 
 
-<!-- Modal -->
-<div id="modal" class="fixed inset-0 hidden z-60 items-center justify-center bg-black/40">
-
+<!-- LOGIN MODAL -->
+<div id="loginModal" class="fixed inset-0 hidden z-60 items-center justify-center bg-black/40">
   <div id="modalContent" class="bg-white w-full max-w-md rounded-2xl shadow-xl p-8 relative mx-4">
-
-    <!-- Close -->
-    <button onclick="closeModal()" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 text-xl">&times;</button>
+    <button onclick="closeModal('loginModal')" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 text-xl">&times;</button>
 
     <h2 class="text-2xl font-bold text-center">Welcome Back</h2>
     <p class="text-center text-gray-500 mb-6">Login to continue</p>
@@ -406,64 +403,22 @@ tailwind.config = {
       <hr class="flex-1">
     </div>
 
-<input
-  id="username"
-  type="text"
-  placeholder="Username or email"
-  class="w-full px-4 py-2 mb-4
-         border border-gray-400
-         rounded-lg
-         bg-transparent
+    <input id="username" type="text" placeholder="Username or email" class="w-full px-4 py-2 mb-4 border border-gray-400 rounded-lg bg-transparent placeholder-gray-500 focus:outline-none focus:border-gray-600 focus:ring-2 focus:ring-indigo-500">
 
-         placeholder-gray-500
-         focus:outline-none
-         focus:border-gray-600
-         focus:ring-2 focus:ring-indigo-500">
+    <input id="password" type="password" placeholder="Password" class="w-full px-4 py-2 mb-2 border border-gray-400 rounded-lg bg-transparent placeholder-gray-500 focus:outline-none focus:border-gray-600 focus:ring-2 focus:ring-indigo-500">
 
-<input
-  id="password"
-  type="password"
-  placeholder="Password"
-  class="w-full px-4 py-2 mb-2
-         border border-gray-400
-         rounded-lg
-         bg-transparent
+    <div class="text-right mb-4">
+      <a href="#" class="text-sm text-indigo-600 hover:underline" onclick="openForgot(); return false;">
+        Forgot password?
+      </a>
+    </div>
 
-         placeholder-gray-500
-         focus:outline-none
-         focus:border-gray-600
-         focus:ring-2 focus:ring-indigo-500">
-
-
-
-  <div class="text-right mb-4">
-  <a href="#" class="text-sm text-indigo-600 hover:underline" onclick="openForgot(); return false;">
-    Forgot password?
-  </a>
-</div>
-
-    <button id="loginBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-semibold transition" onclick="simulateLogin()">
+    <button id="loginBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-semibold transition">
       Login
     </button>
 
-    <p class="text-center text-gray-500 mt-6" onclick="openSignup()" >Don't have an account? <a href="#" class="text-indigo-600 hover:underline">Sign up</a></p>
+    <p class="text-center text-gray-500 mt-6" onclick="openSignup()">Don't have an account? <a href="#" class="text-indigo-600 hover:underline">Sign up</a></p>
   </div>
-</div>
-
-<!-- SUCCESS / FAIL LAYERS -->
-<div id="successLayer" class="hidden absolute inset-0 bg-white flex flex-col items-center justify-center z-50">
-  <div class="relative flex flex-col items-center justify-center">
-    <div id="pulseBg" class="hidden pulse-bg"></div>
-    <div id="spinner" class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-6"></div>
-    <svg id="checkmark" class="hidden w-20 h-20 text-green-500 mb-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-    </svg>
-    <svg id="cross" class="hidden w-20 h-20 text-red-500 mb-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M6 6L18 18M6 18L18 6"/>
-    </svg>
-  </div>
-  <p id="successText" class="mt-4 text-lg font-semibold text-green-600 hidden text-success">Logged in successfully</p>
-  <p id="failText" class="mt-4 text-lg font-semibold text-red-600 hidden text-fail">Invalid username or password</p>
 </div>
 
 <!-- SIGNUP MODAL -->
@@ -474,48 +429,11 @@ tailwind.config = {
     <h2 class="text-2xl font-bold text-center">Create Account</h2>
     <p class="text-center text-gray-500 mb-6">Sign up to continue</p>
 
+    <input id="signupUsername" type="text" placeholder="Username" class="w-full px-4 py-2 mb-4 border border-gray-400 rounded-lg bg-transparent text-gray-800 placeholder-gray-500 focus:outline-none focus:border-gray-600 focus:ring-2 focus:ring-indigo-500">
 
-   <input
-  id="signupUsername"
-  type="text"
-  placeholder="Username"
-  class="w-full px-4 py-2 mb-4
-         border border-gray-400
-         rounded-lg
-         bg-transparent
-         text-gray-800
-         placeholder-gray-500
-         focus:outline-none
-         focus:border-gray-600
-         focus:ring-2 focus:ring-indigo-500">
+    <input id="signupPassword" type="password" placeholder="Password" class="w-full px-4 py-2 mb-4 border border-gray-400 rounded-lg bg-transparent text-gray-800 placeholder-gray-500 focus:outline-none focus:border-gray-600 focus:ring-2 focus:ring-indigo-500">
 
-<input
-  id="signupPassword"
-  type="password"
-  placeholder="Password"
-  class="w-full px-4 py-2 mb-4
-         border border-gray-400
-         rounded-lg
-         bg-transparent
-         text-gray-800
-         placeholder-gray-500
-         focus:outline-none
-         focus:border-gray-600
-         focus:ring-2 focus:ring-indigo-500">
-
-<input
-  id="signupConfirm"
-  type="password"
-  placeholder="Confirm Password"
-  class="w-full px-4 py-2 mb-4
-         border border-gray-400
-         rounded-lg
-         bg-transparent
-         text-gray-800
-         placeholder-gray-500
-         focus:outline-none
-         focus:border-gray-600
-         focus:ring-2 focus:ring-indigo-500">
+    <input id="signupConfirm" type="password" placeholder="Confirm Password" class="w-full px-4 py-2 mb-4 border border-gray-400 rounded-lg bg-transparent text-gray-800 placeholder-gray-500 focus:outline-none focus:border-gray-600 focus:ring-2 focus:ring-indigo-500">
 
     <p id="signupError" class="text-red-600 text-sm mb-4 hidden"></p>
 
@@ -530,22 +448,7 @@ tailwind.config = {
   </div>
 </div>
 
-<div id="successLayer" class="hidden absolute inset-0 bg-white flex flex-col items-center justify-center z-50">
-  <div class="relative flex flex-col items-center justify-center">
-    <div id="pulseBg" class="hidden pulse-bg"></div>
-    <div id="spinner" class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-6"></div>
-    <svg id="checkmark" class="hidden w-20 h-20 text-green-500 mb-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
-    </svg>
-    <svg id="cross" class="hidden w-20 h-20 text-red-500 mb-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M6 6L18 18M6 18L18 6"/>
-    </svg>
-  </div>
-  <p id="successText" class="mt-4 text-lg font-semibold text-green-600 hidden text-success">Logged in successfully</p>
-  <p id="failText" class="mt-4 text-lg font-semibold text-red-600 hidden text-fail">Invalid username or password</p>
-</div>
-
-<!-- Forgot Password Modal -->
+<!-- FORGOT PASSWORD MODAL -->
 <div id="forgotModal" class="fixed inset-0 hidden z-60 items-center justify-center bg-black/40">
   <div id="forgotContent" class="bg-white w-full max-w-md rounded-2xl shadow-xl p-8 relative mx-4">
     <button onclick="closeForgot()" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 text-xl">&times;</button>
@@ -553,19 +456,7 @@ tailwind.config = {
     <h2 class="text-2xl font-bold text-center">Forgot Password</h2>
     <p class="text-center text-gray-500 mb-6">Enter your username or email to reset password</p>
 
-    <input
-  id="forgotUsername"
-  type="text"
-  placeholder="Username or email"
-  class="w-full px-4 py-2 mb-4
-         border border-gray-400
-         rounded-lg
-         bg-transparent
-         text-gray-800
-         placeholder-gray-500
-         focus:outline-none
-         focus:border-gray-600
-         focus:ring-2 focus:ring-indigo-500">
+    <input id="forgotUsername" type="text" placeholder="Username or email" class="w-full px-4 py-2 mb-4 border border-gray-400 rounded-lg bg-transparent text-gray-800 placeholder-gray-500 focus:outline-none focus:border-gray-600 focus:ring-2 focus:ring-indigo-500">
 
     <p id="forgotError" class="text-red-600 text-sm mb-4 hidden"></p>
 
@@ -577,6 +468,21 @@ tailwind.config = {
   </div>
 </div>
 
+<!-- SUCCESS / FAIL LAYER -->
+<div id="successLayer" class="hidden absolute inset-0 bg-white flex flex-col items-center justify-center z-50">
+  <div class="relative flex flex-col items-center justify-center">
+    <div id="pulseBg" class="hidden pulse-bg"></div>
+    <div id="spinner" class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-6"></div>
+    <svg id="checkmark" class="hidden w-20 h-20 text-green-500 mb-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+    </svg>
+    <svg id="cross" class="hidden w-20 h-20 text-red-500 mb-3" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 6L18 18M6 18L18 6"/>
+    </svg>
+  </div>
+  <p id="successText" class="mt-4 text-lg font-semibold text-green-600 hidden text-success"></p>
+  <p id="failText" class="mt-4 text-lg font-semibold text-red-600 hidden text-fail"></p>
+</div>
 
 
 

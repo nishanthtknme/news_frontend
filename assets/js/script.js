@@ -6,6 +6,7 @@ const drawer = document.getElementById('navDrawer');
 const closeBtn = document.getElementById('closeDrawer');
 const backdrop = document.getElementById('backdrop');
 const navbar = document.querySelector('nav'); // navbar element
+const applyFiltersBtn = document.getElementById('applyFiltersBtn'); // apply filters button
 
 // ---------------- OPEN DRAWER ----------------
 toggle?.addEventListener('click', () => {
@@ -23,38 +24,29 @@ function closeDrawer() {
   document.body.classList.remove('overflow-hidden');
 }
 
-// Close events
+// ---------------- CLOSE EVENTS ----------------
 closeBtn?.addEventListener('click', closeDrawer);
 backdrop?.addEventListener('click', closeDrawer);
 document.addEventListener('keydown', e => {
   if(e.key === 'Escape') closeDrawer();
 });
 
+// ---------------- CLOSE DRAWER ON APPLY ----------------
+applyFiltersBtn?.addEventListener('click', () => {
+  // You can also handle filter logic here
+  closeDrawer();
+});
+
 // ---------------- NAVBAR BLUR ON SCROLL ----------------
 function updateNavbar() {
   if(window.scrollY > 20) {
-    navbar.classList.add('backdrop-blur', 'bg-white/5'); // subtle blur, almost transparent
+    navbar.classList.add('backdrop-blur', 'bg-white/5'); // subtle blur
   } else {
     navbar.classList.remove('backdrop-blur', 'bg-white/5');
   }
 }
 window.addEventListener('scroll', updateNavbar);
 updateNavbar(); // initial check
-
-// ---------------- CLOSE DRAWER ----------------
-function closeDrawer() {
-  drawer.classList.add('translate-x-full');
-  drawer.classList.remove('translate-x-0');
-  backdrop.classList.add('hidden');
-  document.body.classList.remove('overflow-hidden');
-}
-
-// Close events
-closeBtn?.addEventListener('click', closeDrawer);
-backdrop?.addEventListener('click', closeDrawer);
-document.addEventListener('keydown', e => {
-  if(e.key === 'Escape') closeDrawer();
-});
 
 
 
@@ -226,65 +218,224 @@ prevStoryZone.addEventListener("click", () => {
   prevStory();
 });
 
-  /* ================= LOGIN/SIGNUP/FORGOT ================= */
-  const modal = document.getElementById("modal");
-  const modalContent = document.getElementById("modalContent");
-  const signupModal = document.getElementById("signupModal");
-  const signupContent = document.getElementById("signupContent");
-  const forgotModal = document.getElementById("forgotModal");
-  const forgotContent = document.getElementById("forgotContent");
-  const layer = document.getElementById("successLayer");
-  const spinner = document.getElementById("spinner");
-  const check = document.getElementById("checkmark");
-  const cross = document.getElementById("cross");
-  const textSuccess = document.getElementById("successText");
-  const textFail = document.getElementById("failText");
-  const pulse = document.getElementById("pulseBg");
 
-  function resetAnimations(){
-    spinner?.classList.remove("hidden");
-    check?.classList.add("hidden");
-    cross?.classList.add("hidden");
-    textSuccess?.classList.add("hidden");
-    textFail?.classList.add("hidden");
-    pulse?.classList.add("hidden");
-  }
 
-  window.openModal = () => {
-    closeDrawer();
-    modal?.classList.remove("hidden");
-    modal?.classList.add("flex");
-    modalContent?.classList.remove("modal-slide-out","shake");
-  };
 
-  window.closeModal = () => {
-    modalContent?.classList.add("modal-slide-out");
-    setTimeout(()=>{
-      modal?.classList.add("hidden");
-      modal?.classList.remove("flex");
-      layer?.classList.add("hidden");
-      resetAnimations();
-    },300);
-  };
-
-  window.openSignup = () => {
-    closeModal();
-    signupModal?.classList.remove("hidden");
-    signupModal?.classList.add("flex");
-  };
-  window.closeSignup = () => {
-    signupModal?.classList.add("hidden");
-    signupModal?.classList.remove("flex");
-  };
-
-  window.openForgot = () => {
-    closeModal(); closeSignup();
-    forgotModal?.classList.remove("hidden");
-    forgotModal?.classList.add("flex");
-  };
-  window.closeForgot = () => {
-    forgotModal?.classList.add("hidden");
-    forgotModal?.classList.remove("flex");
-  };
 
 });
+
+
+
+/* ======================================================
+   GLOBAL VARIABLES (MUST BE GLOBAL)
+====================================================== */
+let loginModal, signupModal, forgotModal;
+let loginBtn, signupBtn, forgotBtn;
+let signupError, forgotError;
+
+let layer, spinner, check, cross, pulse;
+let textSuccess, textFail;
+
+/* ======================================================
+   DOM READY
+====================================================== */
+document.addEventListener("DOMContentLoaded", () => {
+  /* ---- Modal Elements ---- */
+  loginModal = document.getElementById("loginModal");
+  signupModal = document.getElementById("signupModal");
+  forgotModal = document.getElementById("forgotModal");
+
+  /* ---- Buttons ---- */
+  loginBtn = document.getElementById("loginBtn");
+  signupBtn = document.getElementById("signupBtn");
+  forgotBtn = document.getElementById("forgotBtn");
+
+  /* ---- Errors ---- */
+  signupError = document.getElementById("signupError");
+  forgotError = document.getElementById("forgotError");
+
+  /* ---- Success Layer ---- */
+  layer = document.getElementById("successLayer");
+  spinner = document.getElementById("spinner");
+  check = document.getElementById("checkmark");
+  cross = document.getElementById("cross");
+  pulse = document.getElementById("pulseBg");
+  textSuccess = document.getElementById("successText");
+  textFail = document.getElementById("failText");
+
+  /* ---- OPEN LOGIN FROM HEADER ---- */
+  document.getElementById("loginOpen")?.addEventListener("click", openModal);
+
+  /* ---- LOGIN ---- */
+  loginBtn?.addEventListener("click", simulateLogin);
+
+  /* ---- SIGNUP ---- */
+  signupBtn?.addEventListener("click", handleSignup);
+
+  /* ---- FORGOT PASSWORD ---- */
+  forgotBtn?.addEventListener("click", handleForgot);
+});
+
+/* ======================================================
+   MODAL OPEN / CLOSE
+====================================================== */
+function openModal() {
+  if (!loginModal) return;
+  loginModal.classList.remove("hidden");
+  loginModal.classList.add("flex", "modal-fade");
+}
+
+function closeModal(id) {
+  const modal = document.getElementById(id);
+  if (!modal) return;
+  modal.classList.add("hidden");
+  modal.classList.remove("flex", "modal-fade");
+}
+
+function openSignup() {
+  closeModal("loginModal");
+  signupModal?.classList.remove("hidden");
+  signupModal?.classList.add("flex", "modal-fade");
+}
+
+function closeSignup() {
+  signupModal?.classList.add("hidden");
+  signupModal?.classList.remove("flex", "modal-fade");
+  signupError?.classList.add("hidden");
+
+  document.getElementById("signupUsername").value = "";
+  document.getElementById("signupPassword").value = "";
+  document.getElementById("signupConfirm").value = "";
+}
+
+function openForgot() {
+  closeModal("loginModal");
+  closeSignup();
+  forgotModal?.classList.remove("hidden");
+  forgotModal?.classList.add("flex", "modal-fade");
+}
+
+function closeForgot() {
+  forgotModal?.classList.add("hidden");
+  forgotModal?.classList.remove("flex", "modal-fade");
+  forgotError?.classList.add("hidden");
+  document.getElementById("forgotUsername").value = "";
+}
+
+function switchToLogin() {
+  closeSignup();
+  openModal();
+}
+
+function switchToLoginFromForgot() {
+  closeForgot();
+  openModal();
+}
+
+/* ======================================================
+   LOGIN
+====================================================== */
+function simulateLogin() {
+  const username = document.getElementById("username").value.trim();
+  const password = document.getElementById("password").value;
+
+  resetAnimations();
+
+  if (!username || !password) {
+    textFail.textContent = "Please enter username and password";
+    textFail.classList.remove("hidden");
+    layer.classList.remove("hidden");
+    return;
+  }
+
+  if (username === "test" && password === "1234") {
+    showSuccess(`Logged in as: ${username}`);
+  } else {
+    layer.classList.remove("hidden");
+    cross.classList.remove("hidden");
+    textFail.textContent = "Invalid username or password";
+    textFail.classList.remove("hidden");
+
+    setTimeout(() => {
+      layer.classList.add("hidden");
+      resetAnimations();
+    }, 1200);
+  }
+}
+
+/* ======================================================
+   SIGNUP
+====================================================== */
+function handleSignup() {
+  const username = document.getElementById("signupUsername").value.trim();
+  const password = document.getElementById("signupPassword").value;
+  const confirm = document.getElementById("signupConfirm").value;
+
+  if (!username || !password || !confirm) {
+    signupError.textContent = "All fields are required.";
+    signupError.classList.remove("hidden");
+    return;
+  }
+
+  if (password !== confirm) {
+    signupError.textContent = "Passwords do not match!";
+    signupError.classList.remove("hidden");
+    return;
+  }
+
+  signupError.classList.add("hidden");
+  showSuccess(`Account created for: ${username}`);
+}
+
+/* ======================================================
+   FORGOT PASSWORD
+====================================================== */
+function handleForgot() {
+  const username = document.getElementById("forgotUsername").value.trim();
+
+  if (!username) {
+    forgotError.textContent = "Please enter your username or email.";
+    forgotError.classList.remove("hidden");
+    return;
+  }
+
+  forgotError.classList.add("hidden");
+  showSuccess(`Password reset link sent to: ${username}`);
+}
+
+/* ======================================================
+   SUCCESS / FAIL ANIMATION
+====================================================== */
+function resetAnimations() {
+  spinner.classList.remove("hidden");
+  check.classList.add("hidden");
+  cross.classList.add("hidden");
+  pulse.classList.add("hidden");
+  textSuccess.classList.add("hidden");
+  textFail.classList.add("hidden");
+}
+
+function showSuccess(message) {
+  resetAnimations();
+  layer.classList.remove("hidden");
+
+  textSuccess.textContent = message;
+  textSuccess.classList.remove("hidden");
+
+  setTimeout(() => {
+    spinner.classList.add("hidden");
+    check.classList.remove("hidden");
+    pulse.classList.remove("hidden");
+
+    setTimeout(() => {
+      layer.classList.add("hidden");
+      resetAnimations();
+      closeSignup();
+      closeForgot();
+      closeModal("loginModal");
+    }, 1200);
+  }, 500);
+}
+
+
+
