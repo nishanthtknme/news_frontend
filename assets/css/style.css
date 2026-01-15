@@ -57,15 +57,45 @@
     opacity: 0.85;
   }
 
- .filter {
-  background: transparent;
+/* BASE SELECT */
+.filter {
   font-size: 13px;
   padding: 10px 14px;
   border-radius: 9999px;
-  border: 1px solid #9ca3af; /* gray-400 */
+  appearance: none;
+  -webkit-appearance: none;
+  transition: all 0.3s ease;
 }
-.filter option { background: #18181b; }
-.filter:focus { border-color: #00ffe1; }
+
+/* LIGHT THEME */
+body.light .filter {
+  background-color: #ffffff; /* white bg */
+  color: #000000;            /* black text */
+  border: 1px solid #d1d5db; /* gray-300 border */
+}
+
+body.light .filter option {
+  background-color: #ffffff; /* option bg white */
+  color: #000000;            /* option text black */
+}
+
+/* DARK THEME */
+body.dark .filter {
+  background-color: #18181b; /* dark bg */
+  color: #ffffff;             /* white text */
+  border: 1px solid #52525b; /* dark gray border */
+}
+
+body.dark .filter option {
+  background-color: #18181b; /* option bg dark */
+  color: #ffffff;             /* option text white */
+}
+
+/* Focus state for both */
+.filter:focus {
+  border-color: #00ffe1;
+  outline: none;
+}
 
 
  /* ======================================================
@@ -274,5 +304,7 @@
 /* Modal fade+scale out */
 @keyframes modalClose {0%{opacity:1; transform:scale(1);}100%{opacity:0; transform:scale(0.9);}}
 .modal-slide-out {animation:modalClose 0.6s forwards;}
+
+
 
 

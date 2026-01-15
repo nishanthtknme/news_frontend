@@ -23,7 +23,8 @@ tailwind.config = {
 
 </head>
 
-<body class="overflow-x-hidden" style="background-color: #ffffff; color: #000000">
+<body class="overflow-x-hidden light">
+
 
 
 
@@ -250,130 +251,213 @@ tailwind.config = {
          grid-flow-dense
          px-2 pb-24 max-w-7xl mx-auto">
 
-  <!-- FEATURE IMAGE (2x2) -->
-  <a href="newsview.html"
-     class="card relative col-span-2 row-span-2 overflow-hidden group"
-     data-category="News"
-     data-media="Image"
-     data-place="India"  data-date="2026-01-10">
+<!-- FEATURE IMAGE (2x2) -->
+<a href="newsview.html"
+   class="card relative col-span-2 row-span-2 overflow-hidden group"
+   data-category="News"
+   data-media="Image"
+   data-place="India" data-date="2026-01-10">
 
-    <!-- 🔍 SEARCHABLE TEXT (HIDDEN) -->
-    <span class="sr-only">
-      Technology Feature India Tech Image Latest Innovation Launch
-    </span>
+  <span class="sr-only">
+    Technology Feature India Tech Image Latest Innovation Launch
+  </span>
 
-    <img
-      src="https://picsum.photos/900?31"
-      class="absolute inset-0 w-full h-full object-cover
-             transition-transform duration-300 group-hover:scale-105">
-    <div class="absolute inset-0 bg-black/25"></div>
-  </a>
+  <img
+    src="https://picsum.photos/900?31"
+    class="absolute inset-0 w-full h-full object-cover
+           transition-transform duration-300 group-hover:scale-105">
 
-  <!-- IMAGE -->
-  <a href="newsview.html"
-     class="card relative aspect-square overflow-hidden group"
-     data-category="Politics"
-     data-media="Image"
-     data-place="Delhi" data-date="2026-01-10">
+  <!-- dark overlay (BELOW text) -->
+  <div class="absolute inset-0 bg-black/30"></div>
 
-    <span class="sr-only">
-      Political Update Election Delhi Government Breaking News
-    </span>
+  <!-- text overlay (ON TOP) -->
+  <div class="absolute bottom-0 left-0 right-0 z-10
+              bg-gradient-to-t from-black/90 via-black/60 to-transparent
+              text-white p-4 text-base font-semibold">
+    Technology Feature – India’s Latest Innovation
+  </div>
 
-    <img
-      src="https://i.pinimg.com/474x/8e/ce/c3/8ecec3d552653011983cc17d299289b1.jpg"
-      class="absolute inset-0 w-full h-full object-cover
-             transition-transform duration-300 group-hover:scale-105">
-  </a>
+</a>
 
-  <!-- VIDEO -->
-  <a href="newsview.html"
-     class="card relative aspect-square overflow-hidden"
-     data-category="News"
-     data-media="Video"
-     data-place="India"  data-date="2026-01-08">
+<!-- IMAGE -->
+<a href="newsview.html"
+   class="card relative aspect-square overflow-hidden group"
+   data-category="Politics"
+   data-media="Image"
+   data-place="Delhi" data-date="2026-01-10">
 
-    <span class="sr-only">
-      Breaking News Video India Headlines Live Report
-    </span>
+  <span class="sr-only">
+    Political Update Election Delhi Government Breaking News
+  </span>
 
-    <video
-      src="assets/video/v1.mp4"
-      class="absolute inset-0 w-full h-full object-cover"
-      autoplay muted loop playsinline>
-    </video>
-    <div class="absolute top-2 right-2 text-white text-lg">▶</div>
-  </a>
+  <img
+    src="https://i.pinimg.com/474x/8e/ce/c3/8ecec3d552653011983cc17d299289b1.jpg"
+    class="absolute inset-0 w-full h-full object-cover
+           transition-transform duration-300 group-hover:scale-105">
 
-  <!-- IMAGE -->
-  <a href="newsview.html"
-     class="card relative aspect-square overflow-hidden group"
-     data-category="Sports"
-     data-media="Image"
-     data-place="Mumbai"  data-date="2026-01-09">
+  <!-- dark overlay (BELOW text) -->
+  <div class="absolute inset-0 bg-black/30"></div>
 
-    <span class="sr-only">
-      Sports Highlights Mumbai Match Score Cricket Football
-    </span>
+  <!-- text overlay (ON TOP) -->
+  <div class="absolute bottom-0 left-0 right-0 z-10
+              bg-gradient-to-t from-black/90 via-black/60 to-transparent
+              text-white p-4 text-sm md:text-base font-semibold">
+    Political Update: Delhi Election & Government News
+  </div>
 
-    <img
-      src="https://picsum.photos/600?22"
-      class="absolute inset-0 w-full h-full object-cover
-             transition-transform duration-300 group-hover:scale-105">
-  </a>
+</a>
 
-  <!-- FEATURE VIDEO (2x2) -->
-  <a href="newsview.html"
-     class="card relative col-span-2 row-span-2 overflow-hidden"
-     data-category="Tech"
-     data-media="Video"
-     data-place="Bangalore"  data-date="2026-01-06">
+<!-- VIDEO -->
+<a href="newsview.html"
+   class="card relative aspect-square overflow-hidden"
+   data-category="News"
+   data-media="Video"
+   data-place="India" data-date="2026-01-08">
 
-    <span class="sr-only">
-      Tech Product Launch Bangalore Startup AI Innovation
-    </span>
+  <span class="sr-only">
+    Breaking News Video India Headlines Live Report
+  </span>
 
-    <video
-      src="assets/video/v2.mp4"
-      class="absolute inset-0 w-full h-full object-cover"
-      autoplay muted loop playsinline>
-    </video>
-    <div class="absolute top-2 right-2 text-white text-lg">▶</div>
-  </a>
+  <video
+    src="assets/video/v1.mp4"
+    class="absolute inset-0 w-full h-full object-cover"
+    autoplay muted loop playsinline>
+  </video>
 
-  <!-- IMAGE -->
-  <a href="newsview.html"
-     class="card relative aspect-square overflow-hidden group"
-     data-category="Entertainment"
-     data-media="Image"
-     data-place="Chennai"  data-date="2026-01-07">
+  <!-- dark overlay (below text) -->
+  <div class="absolute inset-0 bg-black/30"></div>
 
-    <span class="sr-only">
-      Entertainment Buzz Chennai Movie Music Celebrity
-    </span>
+  <!-- play icon -->
+  <div class="absolute top-2 right-2 text-white text-lg z-10">▶</div>
 
-    <img
-      src="https://picsum.photos/600?12"
-      class="absolute inset-0 w-full h-full object-cover
-             transition-transform duration-300 group-hover:scale-105">
-  </a>
+  <!-- text overlay (on top) -->
+  <div class="absolute bottom-0 left-0 right-0 z-10
+              bg-gradient-to-t from-black/90 via-black/60 to-transparent
+              text-white p-4 text-sm md:text-base font-semibold">
+    Breaking News: India Headlines & Live Report
+  </div>
 
-  <!-- IMAGE -->
-  <a href="newsview.html"
-     class="card relative aspect-square overflow-hidden group"
-     data-category="Travel"
-     data-media="Image"
-     data-place="Kerala"  data-date="2026-01-08">
+</a>
 
-    <span class="sr-only">
-      Travel Photography Kerala Nature Tourism Landscape
-    </span>
+<!-- IMAGE -->
+<a href="newsview.html"
+   class="card relative aspect-square overflow-hidden group"
+   data-category="Sports"
+   data-media="Image"
+   data-place="Mumbai" data-date="2026-01-09">
 
-    <img
-      src="https://picsum.photos/600?21"
-      class="absolute inset-0 w-full h-full object-cover
-             transition-transform duration-300 group-hover:scale-105">
-  </a>
+  <span class="sr-only">
+    Sports Highlights Mumbai Match Score Cricket Football
+  </span>
+
+  <img
+    src="https://picsum.photos/600?22"
+    class="absolute inset-0 w-full h-full object-cover
+           transition-transform duration-300 group-hover:scale-105">
+
+  <!-- dark overlay (BELOW text) -->
+  <div class="absolute inset-0 bg-black/30"></div>
+
+  <!-- text overlay (ON TOP) -->
+  <div class="absolute bottom-0 left-0 right-0 z-10
+              bg-gradient-to-t from-black/90 via-black/60 to-transparent
+              text-white p-4 text-sm md:text-base font-semibold">
+    Sports Highlights: Mumbai Match Score & Key Moments
+  </div>
+
+</a>
+
+<!-- FEATURE VIDEO (2x2) -->
+<a href="newsview.html"
+   class="card relative col-span-2 row-span-2 overflow-hidden"
+   data-category="Tech"
+   data-media="Video"
+   data-place="Bangalore" data-date="2026-01-06">
+
+  <span class="sr-only">
+    Tech Product Launch Bangalore Startup AI Innovation
+  </span>
+
+  <video
+    src="assets/video/v2.mp4"
+    class="absolute inset-0 w-full h-full object-cover"
+    autoplay muted loop playsinline>
+  </video>
+
+  <!-- dark overlay (BELOW text) -->
+  <div class="absolute inset-0 bg-black/30"></div>
+
+  <!-- play icon -->
+  <div class="absolute top-2 right-2 text-white text-lg z-10">▶</div>
+
+  <!-- text overlay (ON TOP) -->
+  <div class="absolute bottom-0 left-0 right-0
+              bg-gradient-to-t from-black/90 via-black/60 to-transparent
+              text-white
+              p-4
+              text-base
+              font-semibold
+              z-10">
+    Tech Product Launch: Bangalore AI Startup Breakthrough
+  </div>
+
+</a>
+
+ <!-- IMAGE -->
+<a href="newsview.html"
+   class="card relative aspect-square overflow-hidden group"
+   data-category="Entertainment"
+   data-media="Image"
+   data-place="Chennai" data-date="2026-01-07">
+
+  <span class="sr-only">
+    Entertainment Buzz Chennai Movie Music Celebrity
+  </span>
+
+  <img
+    src="https://picsum.photos/600?12"
+    class="absolute inset-0 w-full h-full object-cover
+           transition-transform duration-300 group-hover:scale-105">
+
+  <!-- dark overlay (below text) -->
+  <div class="absolute inset-0 bg-black/30"></div>
+
+  <!-- text overlay (on top) -->
+  <div class="absolute bottom-0 left-0 right-0 z-10
+              bg-gradient-to-t from-black/90 via-black/60 to-transparent
+              text-white p-4 text-sm md:text-base font-semibold">
+    Entertainment Buzz: Chennai Movies & Music
+  </div>
+
+</a>
+
+<!-- IMAGE -->
+<a href="newsview.html"
+   class="card relative aspect-square overflow-hidden group"
+   data-category="Travel"
+   data-media="Image"
+   data-place="Kerala" data-date="2026-01-08">
+
+  <span class="sr-only">
+    Travel Photography Kerala Nature Tourism Landscape
+  </span>
+
+  <img
+    src="https://picsum.photos/600?21"
+    class="absolute inset-0 w-full h-full object-cover
+           transition-transform duration-300 group-hover:scale-105">
+
+  <!-- dark overlay (below text) -->
+  <div class="absolute inset-0 bg-black/30"></div>
+
+  <!-- text overlay (on top) -->
+  <div class="absolute bottom-0 left-0 right-0 z-10
+              bg-gradient-to-t from-black/90 via-black/60 to-transparent
+              text-white p-4 text-sm md:text-base font-semibold">
+    Travel Photography: Kerala Nature & Landscapes
+  </div>
+
+</a>
 
 </div>
 
@@ -385,8 +469,8 @@ tailwind.config = {
 
 
 <!-- LOGIN MODAL -->
-<div id="loginModal" class="fixed inset-0 hidden z-60 items-center justify-center bg-black/40">
-  <div id="modalContent" class="bg-white w-full max-w-md rounded-2xl shadow-xl p-8 relative mx-4">
+<div id="loginModal" class="fixed inset-0 hidden flex items-center justify-center bg-black/40 z-[9999]">
+  <div id="modalContent" class="bg-white w-full max-w-md rounded-2xl shadow-xl p-8 relative mx-4 z-[10001]">
     <button onclick="closeModal('loginModal')" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 text-xl">&times;</button>
 
     <h2 class="text-2xl font-bold text-center">Welcome Back</h2>
@@ -422,8 +506,8 @@ tailwind.config = {
 </div>
 
 <!-- SIGNUP MODAL -->
-<div id="signupModal" class="fixed inset-0 hidden z-60 items-center justify-center bg-black/40">
-  <div id="signupContent" class="bg-white w-full max-w-md rounded-2xl shadow-xl p-8 relative mx-4">
+<div id="signupModal" class="fixed inset-0 hidden flex items-center justify-center bg-black/40 z-[9999]">
+  <div id="signupContent" class="bg-white w-full max-w-md rounded-2xl shadow-xl p-8 relative mx-4 z-[10001]">
     <button onclick="closeSignup()" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 text-xl">&times;</button>
 
     <h2 class="text-2xl font-bold text-center">Create Account</h2>
@@ -449,8 +533,8 @@ tailwind.config = {
 </div>
 
 <!-- FORGOT PASSWORD MODAL -->
-<div id="forgotModal" class="fixed inset-0 hidden z-60 items-center justify-center bg-black/40">
-  <div id="forgotContent" class="bg-white w-full max-w-md rounded-2xl shadow-xl p-8 relative mx-4">
+<div id="forgotModal" class="fixed inset-0 hidden flex items-center justify-center bg-black/40 z-[9999]">
+  <div id="forgotContent" class="bg-white w-full max-w-md rounded-2xl shadow-xl p-8 relative mx-4 z-[10001]">
     <button onclick="closeForgot()" class="absolute right-4 top-4 text-gray-400 hover:text-gray-600 text-xl">&times;</button>
 
     <h2 class="text-2xl font-bold text-center">Forgot Password</h2>
@@ -469,7 +553,7 @@ tailwind.config = {
 </div>
 
 <!-- SUCCESS / FAIL LAYER -->
-<div id="successLayer" class="hidden absolute inset-0 bg-white flex flex-col items-center justify-center z-50">
+<div id="successLayer" class="hidden absolute inset-0 flex flex-col items-center justify-center bg-white z-[10000]">
   <div class="relative flex flex-col items-center justify-center">
     <div id="pulseBg" class="hidden pulse-bg"></div>
     <div id="spinner" class="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mb-6"></div>

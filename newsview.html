@@ -3,6 +3,11 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:title" content="Markets React to Global Oil Prices">
+<meta property="og:description" content="Interesting read on how global oil prices are impacting markets.">
+<meta property="og:url" content="https://yournews.com/news/markets-react-to-global-oil-prices">
+<meta property="og:type" content="article">
+
 <title>Explore</title>
 
 <script src="https://cdn.tailwindcss.com"></script>
@@ -229,9 +234,15 @@ tailwind.config = {
         News • Mumbai
       </div>
 
-      <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-4">
-        Markets React to Global Oil Prices
-      </h1>
+      <a href="/news/markets-react-to-global-oil-prices"
+   class="block hover:underline focus:outline-none">
+
+  <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold mb-4">
+    Markets React to Global Oil Prices
+  </h1>
+
+</a>
+
 
       <!-- AUTHOR -->
       <div class="flex items-center gap-3 text-gray-400 text-sm mb-6">
@@ -264,10 +275,12 @@ tailwind.config = {
     <span class="text-sm font-medium">Comments</span>
   </button>
 
-  <button class="flex items-center gap-2 hover:text-blue-500 transition ml-auto">
-    <i class="ph ph-share-network text-xl"></i>
-    <span class="text-sm font-medium">Share</span>
-  </button>
+  <button id="shareBtn"
+  class="flex items-center gap-2 hover:text-blue-500 transition ml-auto">
+  <i class="ph ph-share-network text-xl"></i>
+  <span class="text-sm font-medium">Share</span>
+</button>
+
 </div>
 
 <!-- COMMENTS -->
@@ -344,6 +357,7 @@ tailwind.config = {
 </div>
 
 <script>
+/* ================= ELEMENTS ================= */
 const toggleBtn = document.getElementById("commentToggle");
 const comments = document.getElementById("commentsSection");
 const input = document.getElementById("commentInput");
@@ -351,35 +365,55 @@ const commentActionBtn = document.getElementById("commentActionBtn");
 const commentOverlay = document.getElementById("commentRecordingOverlay");
 const list = document.getElementById("commentList");
 
+/* ================= STATE ================= */
 let open = false;
-let activeRecorder, activeChunks, activeTextarea, activeBtn, activeCallback, activeOverlay, activeInterval;
+let activeRecorder = null;
+let activeChunks = [];
+let activeInterval = null;
+
+/* ================= HEIGHT ================= */
+function updateCommentsHeight() {
+  if (open) {
+    comments.style.maxHeight = comments.scrollHeight + "px";
+  }
+}
 
 /* ================= TOGGLE COMMENTS ================= */
 toggleBtn.onclick = () => {
   open = !open;
-  if(open){
-    comments.classList.remove("opacity-0","translate-y-12");
-    comments.classList.add("opacity-100","translate-y-0");
+
+  if (open) {
+    comments.classList.remove("opacity-0", "translate-y-12");
+    comments.classList.add("opacity-100", "translate-y-0");
     comments.style.maxHeight = comments.scrollHeight + "px";
-  }else{
-    comments.classList.add("opacity-0","translate-y-12");
-    comments.classList.remove("opacity-100","translate-y-0");
+
+    // ✅ SCROLL / JUMP TO COMMENTS TOP
+    setTimeout(() => {
+      comments.scrollIntoView({
+        behavior: "smooth", // use "auto" for instant jump
+        block: "start"
+      });
+    }, 50);
+
+  } else {
+    comments.classList.add("opacity-0", "translate-y-12");
+    comments.classList.remove("opacity-100", "translate-y-0");
     comments.style.maxHeight = "0px";
   }
 };
 
 /* ================= AUTO RESIZE ================= */
-function autoResize(t){
+function autoResize(t) {
   t.style.height = "auto";
   t.style.height = t.scrollHeight + "px";
 }
 
 /* ================= BUTTON STATE ================= */
-function updateBtn(t,b){
-  if(t.value.trim()){
+function updateBtn(t, b) {
+  if (t.value.trim()) {
     b.textContent = "Post";
     b.className = "px-4 py-2 rounded-2xl bg-neon text-black text-sm";
-  }else{
+  } else {
     b.textContent = "🎤";
     b.className = "w-12 h-12 rounded-full bg-gray-200 text-xl";
   }
@@ -391,153 +425,147 @@ input.oninput = () => {
 };
 
 /* ================= AUDIO / TEXT HANDLER ================= */
-async function handleAction(t,b,cb,overlay=null){
-  if(t.value.trim()){
-    cb({text:t.value.trim()});
-    t.value="";
-    autoResize(t);
-    updateBtn(t,b);
-    comments.style.maxHeight = comments.scrollHeight+"px";
+async function handleAction(textarea, button, callback, overlay = null) {
+  // TEXT MODE
+  if (textarea.value.trim()) {
+    callback({ text: textarea.value.trim() });
+    textarea.value = "";
+    autoResize(textarea);
+    updateBtn(textarea, button);
+    updateCommentsHeight();
     return;
   }
 
-  if(activeRecorder){
+  // STOP RECORDING
+  if (activeRecorder) {
     activeRecorder.stop();
     return;
   }
 
-  const stream = await navigator.mediaDevices.getUserMedia({audio:true});
+  // START RECORDING
+  const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
   const recorder = new MediaRecorder(stream);
   activeRecorder = recorder;
   activeChunks = [];
-  activeTextarea = t;
-  activeBtn = b;
-  activeCallback = cb;
-  activeOverlay = overlay;
 
-  if(activeOverlay){
-    activeOverlay.classList.add("active"); // SHOW overlay
-    let sec=0;
-    const timerSpan = activeOverlay.querySelector(".recordingTimer");
-    activeInterval = setInterval(()=>{
+  if (overlay) {
+    overlay.classList.add("active");
+    let sec = 0;
+    const timer = overlay.querySelector(".recordingTimer");
+    activeInterval = setInterval(() => {
       sec++;
-      if(timerSpan) timerSpan.textContent=`${sec}s`;
-    },1000);
+      if (timer) timer.textContent = sec + "s";
+    }, 1000);
   }
 
-  recorder.ondataavailable = e=>activeChunks.push(e.data);
+  recorder.ondataavailable = e => activeChunks.push(e.data);
+
   recorder.onstop = () => {
-    const blob = new Blob(activeChunks,{type:"audio/webm"});
-    activeCallback({audio: URL.createObjectURL(blob)});
-    if(activeOverlay){
-      activeOverlay.classList.remove("active"); // HIDE overlay
+    const blob = new Blob(activeChunks, { type: "audio/webm" });
+    callback({ audio: URL.createObjectURL(blob) });
+
+    if (overlay) {
+      overlay.classList.remove("active");
       clearInterval(activeInterval);
     }
+
     activeRecorder = null;
-    updateBtn(activeTextarea,activeBtn);
-    comments.style.maxHeight = comments.scrollHeight+"px";
+    updateBtn(textarea, button);
+    updateCommentsHeight();
   };
 
   recorder.start();
 }
 
-
 /* ================= COMMENT BUTTON ================= */
 commentActionBtn.onclick = () => {
-  handleAction(input,commentActionBtn,addComment,commentOverlay);
+  handleAction(input, commentActionBtn, addComment, commentOverlay);
 };
 
 /* ================= GLOBAL EVENTS ================= */
-document.onclick = e => {
+document.addEventListener("click", e => {
   const btn = e.target.closest("button");
-  if(!btn) return;
+  if (!btn) return;
 
-  if(btn.classList.contains("likeBtn")){
+  // LIKE
+  if (btn.classList.contains("likeBtn")) {
     const i = btn.querySelector("i");
     const s = btn.querySelector("span");
     i.classList.toggle("ph-fill");
     i.classList.toggle("text-red-500");
-    s.textContent = +s.textContent + (i.classList.contains("ph-fill")?1:-1);
+    s.textContent =
+      +s.textContent + (i.classList.contains("ph-fill") ? 1 : -1);
   }
 
-  if(btn.classList.contains("replyBtn")){
-    btn.closest(".commentItem").querySelector(".replySection").classList.toggle("hidden");
-    comments.style.maxHeight = comments.scrollHeight+"px";
+  // TOGGLE REPLY
+  if (btn.classList.contains("replyBtn")) {
+    btn.closest(".commentItem")
+      .querySelector(".replySection")
+      .classList.toggle("hidden");
+    updateCommentsHeight();
   }
 
-  if(btn.classList.contains("cancelReplyBtn")){
+  // CANCEL REPLY
+  if (btn.classList.contains("cancelReplyBtn")) {
     btn.closest(".replySection").classList.add("hidden");
+    updateCommentsHeight();
   }
 
-  if(btn.classList.contains("replyActionBtn")){
+  // POST REPLY
+  if (btn.classList.contains("replyActionBtn")) {
     const section = btn.closest(".replySection");
-    const t = section.querySelector(".replyInput");
+    const textarea = section.querySelector(".replyInput");
     const overlay = section.querySelector(".recordingOverlay");
 
-    handleAction(t,btn,data=>{
-      addReply(section,data);
+    handleAction(textarea, btn, data => {
+      addReply(section, data);
       section.classList.add("hidden");
-      t.value="";
-    },overlay);
+      textarea.value = "";
+    }, overlay);
   }
-};
+});
 
 /* ================= ADD COMMENT ================= */
-function addComment({text="", audio=""}){
+function addComment({ text = "", audio = "" }) {
   const c = document.createElement("div");
   c.className = "commentItem";
-  c.innerHTML=`
+  c.innerHTML = `
     <div class="flex gap-3">
       <img src="https://i.pravatar.cc/48" class="w-9 h-9 rounded-full">
       <div class="flex-1">
         <div class="font-semibold text-sm">You</div>
-        ${text? `<div class="bg-gray-100 p-3 rounded-2xl mt-1">${text}</div>`:""}
-        ${audio? `<audio controls class="mt-2 w-full"><source src="${audio}"></audio>`:""}
+        ${text ? `<div class="bg-gray-100 p-3 rounded-2xl mt-1">${text}</div>` : ""}
+        ${audio ? `<audio controls class="mt-2 w-full"><source src="${audio}"></audio>` : ""}
         <div class="flex gap-4 mt-1 text-xs text-gray-500">
           <button class="likeBtn"><i class="ph ph-heart"></i> <span>0</span></button>
           <button class="replyBtn">Reply</button>
         </div>
         <div class="repliesList mt-2 ml-12 space-y-3"></div>
-        <div class="replySection hidden mt-2 ml-12">
-          <div class="flex gap-2 relative">
-            <textarea class="replyInput flex-1 resize-none rounded-2xl border px-3 py-2 w-full"></textarea>
-            <div class="recordingOverlay hidden absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div class="recordingWave"></div>
-              <span class="ml-2 recordingTimer">0s</span>
-            </div>
-            <button class="replyActionBtn w-12 h-12 bg-gray-200 rounded-full">🎤</button>
-            <button class="cancelReplyBtn px-4 border rounded-2xl">Cancel</button>
-          </div>
-        </div>
+        <div class="replySection hidden mt-2 ml-12"></div>
       </div>
     </div>`;
   list.appendChild(c);
-  comments.style.maxHeight = comments.scrollHeight+"px";
+  updateCommentsHeight();
 }
 
 /* ================= ADD REPLY ================= */
-function addReply(section,{text="", audio=""}){
+function addReply(section, { text = "", audio = "" }) {
   const list = section.closest(".commentItem").querySelector(".repliesList");
   const r = document.createElement("div");
   r.className = "flex gap-3 items-start";
-  r.innerHTML=`
+  r.innerHTML = `
     <img src="https://i.pravatar.cc/40" class="w-8 h-8 rounded-full mt-1">
     <div class="flex-1">
-      <div class="bg-gray-100 p-2 rounded-xl min-h-[44px]">
-        ${text? `<div class="text-sm mb-1">${text}</div>`:""}
-        ${audio? `<audio controls class="w-full"><source src="${audio}"></audio>`:""}
-      </div>
-      <div class="flex gap-4 mt-1 text-xs text-gray-500">
-        <button class="likeBtn flex items-center gap-1">
-          <i class="ph ph-heart"></i>
-          <span>0</span>
-        </button>
+      <div class="bg-gray-100 p-2 rounded-xl">
+        ${text ? `<div class="text-sm mb-1">${text}</div>` : ""}
+        ${audio ? `<audio controls class="w-full"><source src="${audio}"></audio>` : ""}
       </div>
     </div>`;
   list.appendChild(r);
-  comments.style.maxHeight = comments.scrollHeight+"px";
+  updateCommentsHeight();
 }
 </script>
+
 
 <style>
 /* ===== RECORDING ANIMATION ===== */
@@ -604,6 +632,8 @@ function addReply(section,{text="", audio=""}){
 </style>
 
     </div>
+
+
   </div>
 </div>
 
@@ -613,11 +643,23 @@ function addReply(section,{text="", audio=""}){
 
 
 <script>
+  // ===== CONFIG =====
+  const headline = "Markets React to Global Oil Prices";
+  const githubHostedLink = "https://username.github.io/NEWS_FRONTEND/newsview.html";
+
+  // ===== SHARE BUTTON =====
   document.getElementById("shareBtn").addEventListener("click", async () => {
+    // Use hosted link if on localhost, otherwise current page
+    const articleLink = window.location.hostname.includes("localhost")
+      ? githubHostedLink
+      : window.location.href;
+
+    const shareText = `${headline}\n${articleLink}`;
+
     const shareData = {
-      title: "Markets React to Global Oil Prices",
-      text: "Interesting read on how global oil prices are impacting markets.",
-      url: window.location.href
+      title: headline,
+      text: shareText,
+      url: articleLink
     };
 
     if (navigator.share) {
@@ -627,12 +669,14 @@ function addReply(section,{text="", audio=""}){
         console.log("Share cancelled");
       }
     } else {
-      openShareFallback(shareData);
+      openShareFallback(shareText, articleLink);
     }
   });
 
-  function openShareFallback({ title, url }) {
-    const encodedText = encodeURIComponent(`${title}\n${url}`);
+  // ===== FALLBACK POPUP =====
+  function openShareFallback(text, url) {
+    const encodedText = encodeURIComponent(text);
+    const encodedURL = encodeURIComponent(url);
 
     const popup = `
       <div id="sharePopup"
@@ -642,8 +686,8 @@ function addReply(section,{text="", audio=""}){
 
           <a href="https://wa.me/?text=${encodedText}" target="_blank" class="block">WhatsApp</a>
           <a href="https://twitter.com/intent/tweet?text=${encodedText}" target="_blank" class="block">X / Twitter</a>
-          <a href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}" target="_blank" class="block">Facebook</a>
-          <a href="mailto:?subject=${encodeURIComponent(title)}&body=${encodedText}" class="block">Email</a>
+          <a href="https://www.facebook.com/sharer/sharer.php?u=${encodedURL}" target="_blank" class="block">Facebook</a>
+          <a href="mailto:?subject=${encodeURIComponent(headline)}&body=${encodedText}" class="block">Email</a>
 
           <button onclick="document.getElementById('sharePopup').remove()"
             class="mt-4 w-full bg-gray-100 rounded-lg py-2">
@@ -859,14 +903,17 @@ const closeBtn = document.getElementById('closeDrawer');
 const backdrop = document.getElementById('backdrop');
 
 function openDrawer() {
-  drawer.classList.add('open');
+  drawer.classList.remove('translate-x-full');
+  backdrop.classList.remove('hidden');
   backdrop.classList.add('visible');
 }
 
 function closeDrawer() {
-  drawer.classList.remove('open');   // auto animates left → right
+  drawer.classList.add('translate-x-full');
   backdrop.classList.remove('visible');
+  setTimeout(() => backdrop.classList.add('hidden'), 300);
 }
+
 
 toggle.addEventListener('click', openDrawer);
 closeBtn.addEventListener('click', closeDrawer);

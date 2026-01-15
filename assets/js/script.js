@@ -38,17 +38,25 @@ applyFiltersBtn?.addEventListener('click', () => {
   closeDrawer();
 });
 
-// ---------------- NAVBAR BLUR ON SCROLL ----------------
+// NAVBAR BLUR ON SCROLL
 function updateNavbar() {
-  if(window.scrollY > 20) {
-    navbar.classList.add('backdrop-blur', 'bg-white/5'); // subtle blur
+  const isDark = document.body.classList.contains("dark");
+
+  if (window.scrollY > 20 && isDark) {
+    // Dark theme → glass blur
+    navbar.classList.add("backdrop-blur", "bg-white/10"); // increase opacity
+  } else if (window.scrollY > 20 && !isDark) {
+    // Light theme → solid white background, no blur
+    navbar.classList.remove("backdrop-blur");
+    navbar.classList.add("bg-white");
   } else {
-    navbar.classList.remove('backdrop-blur', 'bg-white/5');
+    // At top → transparent for both
+    navbar.classList.remove("backdrop-blur", "bg-white", "bg-white/10");
   }
 }
-window.addEventListener('scroll', updateNavbar);
-updateNavbar(); // initial check
 
+window.addEventListener("scroll", updateNavbar);
+updateNavbar(); // initial check
 
 
   /* ================= FILTERS ================= */
@@ -93,39 +101,60 @@ updateNavbar(); // initial check
   applyFilters();
 
   /* ================= THEME ================= */
-  const themes = {
-    light: { body:"#fff", text:"#000", drawer:"#f5f5f5", modal:"#0006", modalContent:"#fff" },
-    dark: { body:"#000", text:"#fff", drawer:"#18181b", modal:"#0008", modalContent:"#111" }
-  };
-  const desktopToggle = document.getElementById("themeToggle");
-  const mobileToggle = document.getElementById("themeToggleMobile");
+const themes = {
+  light: { body:"#fff", text:"#000", drawer:"#f5f5f5", modal:"#0006", modalContent:"#fff" },
+  dark: { body:"#000", text:"#fff", drawer:"#18181b", modal:"#0008", modalContent:"#111" }
+};
 
-  function applyTheme(theme){
-    const s = themes[theme];
-    document.body.style.background = s.body;
-    document.body.style.color = s.text;
-    drawer?.style.setProperty("background", s.drawer);
-    document.getElementById("modal")?.style.setProperty("background", s.modal);
-    document.getElementById("modalContent")?.style.setProperty("background", s.modalContent);
-    localStorage.setItem("theme", theme);
+const desktopToggle = document.getElementById("themeToggle");
+const mobileToggle = document.getElementById("themeToggleMobile");
+
+function applyTheme(theme){
+  const s = themes[theme];
+
+  // 1️⃣ Toggle body class for CSS-based styling
+  document.body.classList.remove("light", "dark");
+  document.body.classList.add(theme);
+
+  // 2️⃣ Set inline styles for body & drawer/modal (optional)
+  document.body.style.background = s.body;
+  document.body.style.color = s.text;
+  drawer?.style.setProperty("background", s.drawer);
+  document.getElementById("modal")?.style.setProperty("background", s.modal);
+  document.getElementById("modalContent")?.style.setProperty("background", s.modalContent);
+
+  // 3️⃣ Save preference
+  localStorage.setItem("theme", theme);
+}
+
+// 4️⃣ Load saved theme
+const savedTheme = localStorage.getItem("theme") || "light";
+applyTheme(savedTheme);
+
+// 5️⃣ Set toggle checkboxes
+if(desktopToggle) desktopToggle.checked = savedTheme === "dark";
+if(mobileToggle) mobileToggle.checked = savedTheme === "dark";
+
+// 6️⃣ Listen to desktop toggle
+desktopToggle?.addEventListener("change", () => {
+  const t = desktopToggle.checked ? "dark" : "light";
+  applyTheme(t);
+
+  // Sync mobile toggle
+  if(mobileToggle) mobileToggle.checked = desktopToggle.checked;
+});
+
+// 7️⃣ Listen to mobile toggle
+mobileToggle?.addEventListener("change", () => {
+  const t = mobileToggle.checked ? "dark" : "light";
+  applyTheme(t);
+
+  // Sync desktop toggle
+  if(desktopToggle){
+    desktopToggle.checked = mobileToggle.checked;
   }
+});
 
-  const savedTheme = localStorage.getItem("theme") || "light";
-  applyTheme(savedTheme);
-  if(desktopToggle) desktopToggle.checked = savedTheme === "dark";
-  if(mobileToggle) mobileToggle.checked = savedTheme === "dark";
-
-  desktopToggle?.addEventListener("change", () => {
-    const t = desktopToggle.checked ? "dark" : "light";
-    applyTheme(t);
-    if(mobileToggle) mobileToggle.checked = desktopToggle.checked;
-  });
-  mobileToggle?.addEventListener("change", () => {
-    if(desktopToggle){
-      desktopToggle.checked = mobileToggle.checked;
-      desktopToggle.dispatchEvent(new Event("change"));
-    }
-  });
 
 const storyCards = document.querySelectorAll(".story-card");
 const storyViewer = document.getElementById("storyViewer");
